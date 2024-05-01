@@ -24,7 +24,7 @@ func (repository AdminRepositoryImpl) Register(admin *domain.Admin) (*domain.Adm
 
 func (repository AdminRepositoryImpl) Login(username string) (*domain.Admin, error) {
 	var admin domain.Admin
-	if err := repository.DB.First(&admin, "email LIKE ?", username).Limit(1).Error; err != nil {
+	if err := repository.DB.First(&admin, "username LIKE ?", username).Limit(1).Error; err != nil {
 		return &admin, err
 	}
 	return &admin, nil

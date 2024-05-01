@@ -5,6 +5,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"mini_project/model/domain"
 	"os"
 )
 
@@ -20,7 +21,7 @@ var db *gorm.DB
 
 func InitDB(config Config) *gorm.DB {
 	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s",
+		"%s:%s@tcp(%s:%s)/%s?parseTime=true",
 		config.DBUser,
 		config.DBPass,
 		config.DBHost,
@@ -38,7 +39,7 @@ func InitDB(config Config) *gorm.DB {
 }
 
 func Migrate() {
-	err := db.AutoMigrate()
+	err := db.AutoMigrate(&domain.Admin{}, &domain.User{})
 	if err != nil {
 		log.Fatalf("error migratin database: %s", err.Error())
 	}
