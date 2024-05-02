@@ -11,13 +11,23 @@ import (
 func InitRoute(db *gorm.DB, e *echo.Echo) {
 
 	adminRepository := repository.NewAdminRepository(db)
+	userRepository := repository.NewUserRepository(db)
 
 	adminService := service.NewAdminRepository(adminRepository)
+	userService := service.NewUserService(userRepository)
 
 	adminController := controller.NewAdminController(adminService)
+	userController := controller.NewUserController(userService)
+	fileController := controller.NewFileController()
+
+	e.GET("/image/:image", fileController.ShowFile)
 
 	eAdmin := e.Group("/admin")
 	eAdmin.POST("/login", adminController.Login)
 	eAdmin.POST("/register", adminController.Register)
+
+	eUser := e.Group("/user")
+	eUser.POST("/login", userController.Login)
+	eUser.POST("/register", userController.Register)
 
 }
