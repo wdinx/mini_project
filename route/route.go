@@ -22,11 +22,11 @@ func InitRoute(db *gorm.DB, e *echo.Echo) {
 
 	e.GET("/image/:image", fileController.ShowFile)
 
-	eAdmin := e.Group("/admin")
+	eAdmin := e.Group("/v1/admin")
 	eAdmin.POST("/login", adminController.Login)
 	eAdmin.POST("/register", adminController.Register)
 
-	eUser := e.Group("/user")
+	eUser := e.Group("/v1/user")
 	eUser.POST("/login", userController.Login)
 	eUser.POST("/register", userController.Register)
 
