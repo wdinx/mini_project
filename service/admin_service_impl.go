@@ -63,7 +63,7 @@ func (service AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminLo
 		return &web.AdminLoginResponse{}, constant.ErrLoginFailed
 	}
 
-	token, err := middleware.CreateToken(int(result.ID), result.Username)
+	token, err := middleware.CreateToken(int(result.ID), result.Username, false)
 
 	response := web.AdminLoginResponse{
 		Name:     result.Name,
