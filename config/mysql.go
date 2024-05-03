@@ -39,7 +39,7 @@ func InitDB(config Config) *gorm.DB {
 }
 
 func Migrate() {
-	err := db.AutoMigrate(&domain.Admin{}, &domain.User{})
+	err := db.AutoMigrate(&domain.Admin{}, &domain.User{}, &domain.TouristAttraction{}, &domain.TouristAttractionType{})
 	if err != nil {
 		log.Fatalf("error migratin database: %s", err.Error())
 	}
