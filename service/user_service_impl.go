@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	"mini_project/middleware"
 	"mini_project/model/domain"
 	"mini_project/model/web"
@@ -11,13 +12,17 @@ import (
 
 type UserServiceImpl struct {
 	userRepository repository.UserRepository
+	Validate       *validator.Validate
 }
 
-func NewUserService(userRepository repository.UserRepository) UserService {
-	return &UserServiceImpl{userRepository: userRepository}
+func NewUserService(userRepository repository.UserRepository, validator *validator.Validate) UserService {
+	return &UserServiceImpl{userRepository: userRepository, Validate: validator}
 }
 
 func (service UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLoginResponse, error) {
+	if err := service.Validate.Struct(request); err != nil {
+		return nil, err
+	}
 	user, err := service.userRepository.Login(request.Email)
 	if err != nil {
 		return nil, err
@@ -28,7 +33,7 @@ func (service UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLog
 		return nil, err
 	}
 
-	token, err := middleware.CreateToken(int(user.ID), user.Name, true)
+	token, err := middleware.CreateTokenForUser(int(user.ID), user.Name)
 	util.PanicIfError(err)
 
 	response := web.UserLoginResponse{
@@ -44,6 +49,11 @@ func (service UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLog
 
 func (service UserServiceImpl) Register(request web.UserRegisterRequest) (domain.User, error) {
 	var err error
+	err = service.Validate.Struct(request)
+	if err != nil {
+		return domain.User{}, err
+	}
+
 	request.Password, err = util.HashPassword(request.Password)
 	util.PanicIfError(err)
 

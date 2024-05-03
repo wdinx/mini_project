@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"mini_project/config"
 	"mini_project/route"
@@ -11,10 +12,11 @@ func main() {
 	util.LoadEnv()
 	cfg := config.InitConfigMySQL()
 	e := echo.New()
+	validate := validator.New()
 
 	db := config.InitDB(cfg)
 
-	route.InitRoute(db, e)
+	route.InitRoute(db, e, validate)
 
 	e.Start(":3000")
 }

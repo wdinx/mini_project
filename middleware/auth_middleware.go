@@ -2,16 +2,26 @@ package middleware
 
 import (
 	"github.com/golang-jwt/jwt"
+	"mini_project/constant"
 	"time"
 )
 
-func CreateToken(userId int, name string, isAdmin bool) (string, error) {
+func CreateTokenForUser(userId int, name string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["userId"] = userId
 	claims["name"] = name
-	claims["isAdmin"] = isAdmin
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte("wahyu"))
+	return token.SignedString([]byte(constant.USER_SECRET_JWT))
+}
+
+func CreateTokeForAdmin(adminId int, name string) (string, error) {
+	claims := jwt.MapClaims{}
+	claims["adminId"] = adminId
+	claims["name"] = name
+	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(constant.ADMIN_SECRET_JWT))
 }

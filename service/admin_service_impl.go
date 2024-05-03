@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/go-playground/validator/v10"
 	"mini_project/constant"
 	"mini_project/middleware"
 	"mini_project/model/domain"
@@ -11,20 +12,22 @@ import (
 
 type AdminServiceImpl struct {
 	adminRepository repository.AdminRepository
+	Validate        *validator.Validate
 }
 
-func NewAdminRepository(adminRepository repository.AdminRepository) AdminService {
+func NewAdminRepository(adminRepository repository.AdminRepository, validator *validator.Validate) AdminService {
 	return &AdminServiceImpl{
 		adminRepository: adminRepository,
+		Validate:        validator,
 	}
 }
 
 func (service AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web.AdminRegisterResponse, error) {
-	if admin.Name == "" || admin.Username == "" || admin.Password == "" {
-		return &web.AdminRegisterResponse{}, constant.ErrEmptyInput
+	err := service.Validate.Struct(admin)
+	if err != nil {
+		return &web.AdminRegisterResponse{}, err
 	}
 
-	var err error
 	admin.Password, err = util.HashPassword(admin.Password)
 	util.PanicIfError(err)
 
@@ -49,8 +52,8 @@ func (service AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web.
 }
 
 func (service AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminLoginResponse, error) {
-	if admin.Username == "" || admin.Password == "" {
-		return &web.AdminLoginResponse{}, constant.ErrEmptyInput
+	if err := service.Validate.Struct(admin); err != nil {
+		return &web.AdminLoginResponse{}, err
 	}
 
 	result, err := service.adminRepository.Login(admin.Username)
@@ -63,7 +66,7 @@ func (service AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminLo
 		return &web.AdminLoginResponse{}, constant.ErrLoginFailed
 	}
 
-	token, err := middleware.CreateToken(int(result.ID), result.Username, false)
+	token, err := middleware.CreateTokeForAdmin(int(result.ID), result.Username)
 
 	response := web.AdminLoginResponse{
 		Name:     result.Name,
