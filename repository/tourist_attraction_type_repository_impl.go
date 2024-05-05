@@ -28,11 +28,13 @@ func (repository TouristAttractionTypeRepositoryImpl) Update(touristAttractionTy
 }
 
 func (repository TouristAttractionTypeRepositoryImpl) Delete(touristAttractionTypeId int) error {
-	//if err := repository.DB.Exec("DELETE FROM tourist_attraction_types WHERE id = ?", touristAttractionTypeId).Error; err != nil {
-	//	return err
-	//}
 
-	if err := repository.DB.Delete(&domain.TouristAttractionType{}, "id = ?", touristAttractionTypeId).Error; err != nil {
+	var touristAttractionType *domain.TouristAttractionType
+	if err := repository.DB.Take(&touristAttractionType, "id = ?", touristAttractionTypeId).Error; err != nil {
+		return err
+	}
+
+	if err := repository.DB.Delete(touristAttractionType).Error; err != nil {
 		return err
 	}
 	return nil
