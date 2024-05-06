@@ -9,7 +9,6 @@ type AdminRegisterRequest struct {
 type AdminRegisterResponse struct {
 	Name     string `json:"name"`
 	Username string `json:"username"`
-	Password string `json:"password"`
 }
 
 type AdminLoginResponse struct {

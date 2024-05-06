@@ -12,15 +12,15 @@ import (
 
 type UserServiceImpl struct {
 	userRepository repository.UserRepository
-	Validate       *validator.Validate
+	validator      *validator.Validate
 }
 
 func NewUserService(userRepository repository.UserRepository, validator *validator.Validate) UserService {
-	return &UserServiceImpl{userRepository: userRepository, Validate: validator}
+	return &UserServiceImpl{userRepository: userRepository, validator: validator}
 }
 
 func (service UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLoginResponse, error) {
-	if err := service.Validate.Struct(request); err != nil {
+	if err := service.validator.Struct(request); err != nil {
 		return nil, err
 	}
 	user, err := service.userRepository.Login(request.Email)
@@ -49,7 +49,7 @@ func (service UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLog
 
 func (service UserServiceImpl) Register(request web.UserRegisterRequest) (domain.User, error) {
 	var err error
-	err = service.Validate.Struct(request)
+	err = service.validator.Struct(request)
 	if err != nil {
 		return domain.User{}, err
 	}

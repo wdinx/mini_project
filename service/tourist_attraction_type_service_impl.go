@@ -9,16 +9,16 @@ import (
 
 type TouristAttractionTypeServiceImpl struct {
 	touristAttractionTypeRepository repository.TouristAttractionTypeRepository
-	validate                        *validator.Validate
+	validator                       *validator.Validate
 }
 
 func NewTouristAttractionTypeService(touristAttractionTypeRepository repository.TouristAttractionTypeRepository, validate *validator.Validate) TouristAttractionTypeService {
-	return &TouristAttractionTypeServiceImpl{touristAttractionTypeRepository: touristAttractionTypeRepository, validate: validate}
+	return &TouristAttractionTypeServiceImpl{touristAttractionTypeRepository: touristAttractionTypeRepository, validator: validate}
 }
 
 func (service TouristAttractionTypeServiceImpl) Create(request *web.TouristAttractionTypeCreateRequest) (*web.TouristAttractionTypeResponse, error) {
 	var err error
-	if err = service.validate.Struct(request); err != nil {
+	if err = service.validator.Struct(request); err != nil {
 		return nil, err
 	}
 
@@ -42,7 +42,7 @@ func (service TouristAttractionTypeServiceImpl) Create(request *web.TouristAttra
 
 func (service TouristAttractionTypeServiceImpl) Update(request *web.TouristAttractionTypeUpdateRequest) (*web.TouristAttractionTypeResponse, error) {
 	var err error
-	if err = service.validate.Struct(request); err != nil {
+	if err = service.validator.Struct(request); err != nil {
 		return nil, err
 	}
 

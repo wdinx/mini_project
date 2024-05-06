@@ -54,3 +54,11 @@ func (repository TouristAttractionRepositoryImpl) GetAllTouristAttraction() (*[]
 	}
 	return touristAttractions, nil
 }
+
+func (repository TouristAttractionRepositoryImpl) FindByID(touristAttractionId int) (*domain.TouristAttraction, error) {
+	var touristAttraction *domain.TouristAttraction
+	if err := repository.DB.Take(touristAttraction, "id = ?", touristAttractionId).Error; err != nil {
+		return nil, err
+	}
+	return touristAttraction, nil
+}

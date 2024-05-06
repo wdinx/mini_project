@@ -12,18 +12,18 @@ import (
 
 type AdminServiceImpl struct {
 	adminRepository repository.AdminRepository
-	Validate        *validator.Validate
+	validator       *validator.Validate
 }
 
 func NewAdminRepository(adminRepository repository.AdminRepository, validator *validator.Validate) AdminService {
 	return &AdminServiceImpl{
 		adminRepository: adminRepository,
-		Validate:        validator,
+		validator:       validator,
 	}
 }
 
 func (service AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web.AdminRegisterResponse, error) {
-	err := service.Validate.Struct(admin)
+	err := service.validator.Struct(admin)
 	if err != nil {
 		return &web.AdminRegisterResponse{}, err
 	}
@@ -45,14 +45,13 @@ func (service AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web.
 	result := web.AdminRegisterResponse{
 		Name:     adminResponse.Name,
 		Username: adminResponse.Username,
-		Password: adminResponse.Password,
 	}
 
 	return &result, nil
 }
 
 func (service AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminLoginResponse, error) {
-	if err := service.Validate.Struct(admin); err != nil {
+	if err := service.validator.Struct(admin); err != nil {
 		return &web.AdminLoginResponse{}, err
 	}
 

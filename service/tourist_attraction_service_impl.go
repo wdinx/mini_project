@@ -41,6 +41,7 @@ func (service TouristAttractionServiceImpl) Create(request *web.TouristAttractio
 		Id:                    int(result.ID),
 		Name:                  result.Name,
 		TicketPrice:           result.TicketPrice,
+		Description:           result.Description,
 		Location:              result.Location,
 		Image:                 result.Image,
 		TouristAttractionType: result.TouristAttractionType,

@@ -7,7 +7,7 @@ import (
 
 type TouristAttractionRequest struct {
 	Name                    string                `json:"name" form:"name" validate:"required,min=1,max=200"`
-	Description             string                `json:"description" form:"description" validate:"required,min=1,max=200"`
+	Description             string                `json:"description" form:"description"`
 	TouristAttractionTypeId int                   `json:"tourist_attraction_type_id" form:"tourist_attraction_type_id" validate:"required"`
 	Location                string                `json:"location" form:"location" validate:"required,min=1,max=200"`
 	TicketPrice             string                `json:"ticket_price" form:"ticket_price" validate:"required,min=1,max=200"`
