@@ -10,13 +10,13 @@ import (
 
 func main() {
 	util.LoadEnv()
-	cfg := config.InitConfigMySQL()
+	cfg := config.Get()
 	e := echo.New()
 	validate := validator.New()
 
-	db := config.InitDB(cfg)
+	db := config.InitDB(cfg.Database)
 
-	route.InitRoute(db, e, validate)
+	route.InitRoute(db, e, validate, cfg)
 
 	e.Start(":3000")
 }

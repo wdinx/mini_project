@@ -57,7 +57,7 @@ func (repository TouristAttractionRepositoryImpl) GetAllTouristAttraction() (*[]
 
 func (repository TouristAttractionRepositoryImpl) FindByID(touristAttractionId int) (*domain.TouristAttraction, error) {
 	var touristAttraction *domain.TouristAttraction
-	if err := repository.DB.Take(touristAttraction, "id = ?", touristAttractionId).Error; err != nil {
+	if err := repository.DB.First(&touristAttraction, "id LIKE ?", touristAttractionId).Error; err != nil {
 		return nil, err
 	}
 	return touristAttraction, nil

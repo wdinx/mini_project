@@ -1,7 +1,7 @@
 package domain
 
 type TouristAttraction struct {
-	ID                    int                   `gorm:"column:id;primaryKey;autoIncrement"`
+	ID                    int                   `gorm:"column:id;primaryKey;autoIncrement;not null"`
 	TypeID                int                   `gorm:"column:type_id;not null"`
 	TouristAttractionType TouristAttractionType `gorm:"foreignKey:type_id;references:id"`
 	Description           string                `gorm:"column:description;not null"`

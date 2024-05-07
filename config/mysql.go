@@ -6,27 +6,18 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"mini_project/model/domain"
-	"os"
 )
-
-type Config struct {
-	DBUser string
-	DBPass string
-	DBHost string
-	DBPort string
-	DBName string
-}
 
 var db *gorm.DB
 
-func InitDB(config Config) *gorm.DB {
+func InitDB(database Database) *gorm.DB {
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?parseTime=true",
-		config.DBUser,
-		config.DBPass,
-		config.DBHost,
-		config.DBPort,
-		config.DBName,
+		database.DBUser,
+		database.DBPass,
+		database.DBHost,
+		database.DBPort,
+		database.DBName,
 	)
 	var err error
 	db, err = gorm.Open(mysql.Open(dsn))
@@ -39,18 +30,13 @@ func InitDB(config Config) *gorm.DB {
 }
 
 func Migrate() {
-	err := db.AutoMigrate(&domain.Admin{}, &domain.User{}, &domain.TouristAttraction{}, &domain.TouristAttractionType{})
+	err := db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&domain.Admin{}, &domain.User{}, &domain.TouristAttraction{}, &domain.TouristAttractionType{})
 	if err != nil {
 		log.Fatalf("error migratin database: %s", err.Error())
 	}
-}
 
-func InitConfigMySQL() Config {
-	return Config{
-		DBUser: os.Getenv("DBUSER"),
-		DBPass: os.Getenv("DBPASS"),
-		DBHost: os.Getenv("DBHOST"),
-		DBPort: os.Getenv("DBPORT"),
-		DBName: os.Getenv("DBNAME"),
+	err = db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&domain.Payment{})
+	if err != nil {
+		log.Fatalf("error migratin database: %s", err.Error())
 	}
 }
