@@ -22,7 +22,7 @@ func NewAdminRepository(adminRepository repository.AdminRepository, validator *v
 	}
 }
 
-func (service AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web.AdminRegisterResponse, error) {
+func (service *AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web.AdminRegisterResponse, error) {
 	err := service.validator.Struct(admin)
 	if err != nil {
 		return &web.AdminRegisterResponse{}, err
@@ -50,7 +50,7 @@ func (service AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web.
 	return &result, nil
 }
 
-func (service AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminLoginResponse, error) {
+func (service *AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminLoginResponse, error) {
 	if err := service.validator.Struct(admin); err != nil {
 		return &web.AdminLoginResponse{}, err
 	}

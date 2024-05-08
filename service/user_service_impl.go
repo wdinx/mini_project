@@ -19,7 +19,7 @@ func NewUserService(userRepository repository.UserRepository, validator *validat
 	return &UserServiceImpl{userRepository: userRepository, validator: validator}
 }
 
-func (service UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLoginResponse, error) {
+func (service *UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLoginResponse, error) {
 	if err := service.validator.Struct(request); err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (service UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLog
 	return &response, nil
 }
 
-func (service UserServiceImpl) Register(request web.UserRegisterRequest) (domain.User, error) {
+func (service *UserServiceImpl) Register(request web.UserRegisterRequest) (domain.User, error) {
 	var err error
 	err = service.validator.Struct(request)
 	if err != nil {

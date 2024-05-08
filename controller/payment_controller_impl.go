@@ -15,7 +15,7 @@ func NewPaymentController(paymentService service.PaymentService) PaymentControll
 	return &PaymentControllerImpl{paymentService}
 }
 
-func (controller PaymentControllerImpl) InitializePayment(e echo.Context) error {
+func (controller *PaymentControllerImpl) InitializePayment(e echo.Context) error {
 	var payment web.PaymentRequest
 	err := e.Bind(&payment)
 	if err != nil {

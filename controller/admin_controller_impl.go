@@ -17,7 +17,7 @@ func NewAdminController(adminService service.AdminService) AdminController {
 	}
 }
 
-func (controller AdminControllerImpl) Login(e echo.Context) error {
+func (controller *AdminControllerImpl) Login(e echo.Context) error {
 	adminLoginRequest := web.AdminLoginRequest{}
 	if err := e.Bind(&adminLoginRequest); err != nil {
 		return e.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
@@ -30,7 +30,7 @@ func (controller AdminControllerImpl) Login(e echo.Context) error {
 	return e.JSON(http.StatusOK, web.NewBaseSuccessResponse("login successfully", admin))
 }
 
-func (controller AdminControllerImpl) Register(e echo.Context) error {
+func (controller *AdminControllerImpl) Register(e echo.Context) error {
 	adminRegisterRequest := web.AdminRegisterRequest{}
 	if err := e.Bind(&adminRegisterRequest); err != nil {
 		return e.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))

@@ -22,7 +22,7 @@ func NewTransactionService(transactionRepository repository.TransactionRepositor
 	}
 }
 
-func (service TransactionServiceImpl) Create(request *web.TransactionCreateRequest) error {
+func (service *TransactionServiceImpl) Create(request *web.TransactionCreateRequest) error {
 	if err := service.validator.Struct(request); err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ func (service TransactionServiceImpl) Create(request *web.TransactionCreateReque
 	return err
 }
 
-func (service TransactionServiceImpl) Delete(transactionID int) error {
+func (service *TransactionServiceImpl) Delete(transactionID int) error {
 	if err := service.transactionRepository.Delete(transactionID); err != nil {
 		return err
 	}

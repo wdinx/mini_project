@@ -16,7 +16,7 @@ func NewTouristAttractionController(touristAttractionService service.TouristAttr
 	return &TouristAttractionControllerImpl{touristAttractionService: touristAttractionService}
 }
 
-func (controller TouristAttractionControllerImpl) Create(c echo.Context) error {
+func (controller *TouristAttractionControllerImpl) Create(c echo.Context) error {
 	var err error
 	var touristAttractionCreateRequest web.TouristAttractionRequest
 	if err = c.Bind(&touristAttractionCreateRequest); err != nil {
@@ -33,7 +33,7 @@ func (controller TouristAttractionControllerImpl) Create(c echo.Context) error {
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction created successfully", result))
 }
 
-func (controller TouristAttractionControllerImpl) Update(c echo.Context) error {
+func (controller *TouristAttractionControllerImpl) Update(c echo.Context) error {
 	var err error
 	var touristAttractionUpdateRequest web.TouristAttractionUpdateRequest
 	touristAttractionUpdateRequest.ID, err = strconv.Atoi(c.Param("id"))
@@ -50,7 +50,7 @@ func (controller TouristAttractionControllerImpl) Update(c echo.Context) error {
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction updated successfully", result))
 }
 
-func (controller TouristAttractionControllerImpl) GetAll(c echo.Context) error {
+func (controller *TouristAttractionControllerImpl) GetAll(c echo.Context) error {
 	result, err := controller.touristAttractionService.GetAllTouristAttraction()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
@@ -58,7 +58,7 @@ func (controller TouristAttractionControllerImpl) GetAll(c echo.Context) error {
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("get all tourist attraction success", *result))
 }
 
-func (controller TouristAttractionControllerImpl) UpdateBalanceById(c echo.Context) error {
+func (controller *TouristAttractionControllerImpl) UpdateBalanceById(c echo.Context) error {
 	var err error
 	var touristAttractionUpdateRequest web.TouristAttractionUpdateRequest
 	touristAttractionUpdateRequest.ID, err = strconv.Atoi(c.Param("id"))

@@ -17,7 +17,7 @@ func NewTouristAttractionService(touristAttractionRepository repository.TouristA
 	return &TouristAttractionServiceImpl{touristAttractionRepository: touristAttractionRepository, validator: validator}
 }
 
-func (service TouristAttractionServiceImpl) Create(request *web.TouristAttractionRequest) (*web.TouristAttractionResponse, error) {
+func (service *TouristAttractionServiceImpl) Create(request *web.TouristAttractionRequest) (*web.TouristAttractionResponse, error) {
 	if err := service.validator.Struct(request); err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (service TouristAttractionServiceImpl) Create(request *web.TouristAttractio
 	return &touristAttractionResponse, nil
 }
 
-func (service TouristAttractionServiceImpl) Update(request *web.TouristAttractionUpdateRequest) (*web.TouristAttractionResponse, error) {
+func (service *TouristAttractionServiceImpl) Update(request *web.TouristAttractionUpdateRequest) (*web.TouristAttractionResponse, error) {
 
 	var image string
 	if request.Image != nil {
@@ -83,7 +83,7 @@ func (service TouristAttractionServiceImpl) Update(request *web.TouristAttractio
 	return &touristAttractionResponse, nil
 }
 
-func (service TouristAttractionServiceImpl) UpdateBalanceById(request *web.TouristAttractionUpdateRequest) (*web.TouristAttractionBalanceResponse, error) {
+func (service *TouristAttractionServiceImpl) UpdateBalanceById(request *web.TouristAttractionUpdateRequest) (*web.TouristAttractionBalanceResponse, error) {
 
 	touristAttraction := domain.TouristAttraction{
 		ID:      request.ID,
@@ -102,7 +102,7 @@ func (service TouristAttractionServiceImpl) UpdateBalanceById(request *web.Touri
 	return &touristAttractionBalanceResponse, nil
 }
 
-func (service TouristAttractionServiceImpl) GetAllTouristAttraction() (*[]web.TouristAttractionResponse, error) {
+func (service *TouristAttractionServiceImpl) GetAllTouristAttraction() (*[]web.TouristAttractionResponse, error) {
 
 	result, err := service.touristAttractionRepository.GetAllTouristAttraction()
 	if err != nil {

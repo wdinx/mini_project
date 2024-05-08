@@ -16,7 +16,7 @@ func NewTouristAttractionTypeController(touristAttractionTypeService service.Tou
 	return &TouristAttractionTypeControllerImpl{touristAttractionTypeService: touristAttractionTypeService}
 }
 
-func (controller TouristAttractionTypeControllerImpl) Create(c echo.Context) error {
+func (controller *TouristAttractionTypeControllerImpl) Create(c echo.Context) error {
 	var err error
 	var touristAttractionTypeCreateRequest web.TouristAttractionTypeCreateRequest
 	err = c.Bind(&touristAttractionTypeCreateRequest)
@@ -30,7 +30,7 @@ func (controller TouristAttractionTypeControllerImpl) Create(c echo.Context) err
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction type created successfully", result))
 }
 
-func (controller TouristAttractionTypeControllerImpl) Update(c echo.Context) error {
+func (controller *TouristAttractionTypeControllerImpl) Update(c echo.Context) error {
 	var err error
 	var touristAttractionTypeUpdateRequest web.TouristAttractionTypeUpdateRequest
 	err = c.Bind(&touristAttractionTypeUpdateRequest)
@@ -44,7 +44,7 @@ func (controller TouristAttractionTypeControllerImpl) Update(c echo.Context) err
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction type updated successfully", result))
 }
 
-func (controller TouristAttractionTypeControllerImpl) Delete(c echo.Context) error {
+func (controller *TouristAttractionTypeControllerImpl) Delete(c echo.Context) error {
 	var err error
 	id := c.Param("id")
 	idx, err := strconv.Atoi(id)
@@ -58,7 +58,7 @@ func (controller TouristAttractionTypeControllerImpl) Delete(c echo.Context) err
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction type deleted successfully", nil))
 }
 
-func (controller TouristAttractionTypeControllerImpl) GetAll(c echo.Context) error {
+func (controller *TouristAttractionTypeControllerImpl) GetAll(c echo.Context) error {
 	//var err error
 	result := controller.touristAttractionTypeService.GetAll()
 	if len(*result) == 0 {

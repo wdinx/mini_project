@@ -16,7 +16,7 @@ func NewTouristAttractionTypeService(touristAttractionTypeRepository repository.
 	return &TouristAttractionTypeServiceImpl{touristAttractionTypeRepository: touristAttractionTypeRepository, validator: validate}
 }
 
-func (service TouristAttractionTypeServiceImpl) Create(request *web.TouristAttractionTypeCreateRequest) (*web.TouristAttractionTypeResponse, error) {
+func (service *TouristAttractionTypeServiceImpl) Create(request *web.TouristAttractionTypeCreateRequest) (*web.TouristAttractionTypeResponse, error) {
 	var err error
 	if err = service.validator.Struct(request); err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (service TouristAttractionTypeServiceImpl) Create(request *web.TouristAttra
 
 }
 
-func (service TouristAttractionTypeServiceImpl) Update(request *web.TouristAttractionTypeUpdateRequest) (*web.TouristAttractionTypeResponse, error) {
+func (service *TouristAttractionTypeServiceImpl) Update(request *web.TouristAttractionTypeUpdateRequest) (*web.TouristAttractionTypeResponse, error) {
 	var err error
 	if err = service.validator.Struct(request); err != nil {
 		return nil, err
@@ -66,7 +66,7 @@ func (service TouristAttractionTypeServiceImpl) Update(request *web.TouristAttra
 	return &response, nil
 }
 
-func (service TouristAttractionTypeServiceImpl) Delete(touristAttractionTypeId int) error {
+func (service *TouristAttractionTypeServiceImpl) Delete(touristAttractionTypeId int) error {
 	_, err := service.touristAttractionTypeRepository.FindByID(touristAttractionTypeId)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (service TouristAttractionTypeServiceImpl) Delete(touristAttractionTypeId i
 	return nil
 }
 
-func (service TouristAttractionTypeServiceImpl) GetAll() *[]web.TouristAttractionTypeResponse {
+func (service *TouristAttractionTypeServiceImpl) GetAll() *[]web.TouristAttractionTypeResponse {
 	touristAttractionTypes := service.touristAttractionTypeRepository.GetAll()
 	var responses []web.TouristAttractionTypeResponse
 

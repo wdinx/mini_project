@@ -15,7 +15,7 @@ func NewUserController(userService service.UserService) UserController {
 	return &UserControllerImpl{userService: userService}
 }
 
-func (controller UserControllerImpl) Login(c echo.Context) error {
+func (controller *UserControllerImpl) Login(c echo.Context) error {
 	var err error
 	userLoginRequest := web.UserLoginRequest{}
 	if err := c.Bind(&userLoginRequest); err != nil {
@@ -31,7 +31,7 @@ func (controller UserControllerImpl) Login(c echo.Context) error {
 
 }
 
-func (controller UserControllerImpl) Register(c echo.Context) error {
+func (controller *UserControllerImpl) Register(c echo.Context) error {
 	var err error
 	userRegisterRequest := web.UserRegisterRequest{}
 	if err = c.Bind(&userRegisterRequest); err != nil {

@@ -13,21 +13,21 @@ func NewTouristAttractionTypeRepository(DB *gorm.DB) TouristAttractionTypeReposi
 	return &TouristAttractionTypeRepositoryImpl{DB}
 }
 
-func (repository TouristAttractionTypeRepositoryImpl) Create(touristAttractionType *domain.TouristAttractionType) (*domain.TouristAttractionType, error) {
+func (repository *TouristAttractionTypeRepositoryImpl) Create(touristAttractionType *domain.TouristAttractionType) (*domain.TouristAttractionType, error) {
 	if err := repository.DB.Create(&touristAttractionType).Error; err != nil {
 		return &domain.TouristAttractionType{}, err
 	}
 	return touristAttractionType, nil
 }
 
-func (repository TouristAttractionTypeRepositoryImpl) Update(touristAttractionType *domain.TouristAttractionType) (*domain.TouristAttractionType, error) {
+func (repository *TouristAttractionTypeRepositoryImpl) Update(touristAttractionType *domain.TouristAttractionType) (*domain.TouristAttractionType, error) {
 	if err := repository.DB.Save(&touristAttractionType).Where("id = ?", touristAttractionType.ID).Error; err != nil {
 		return &domain.TouristAttractionType{}, err
 	}
 	return touristAttractionType, nil
 }
 
-func (repository TouristAttractionTypeRepositoryImpl) Delete(touristAttractionTypeId int) error {
+func (repository *TouristAttractionTypeRepositoryImpl) Delete(touristAttractionTypeId int) error {
 
 	var touristAttractionType *domain.TouristAttractionType
 	if err := repository.DB.Take(&touristAttractionType, "id = ?", touristAttractionTypeId).Error; err != nil {
@@ -40,7 +40,7 @@ func (repository TouristAttractionTypeRepositoryImpl) Delete(touristAttractionTy
 	return nil
 }
 
-func (repository TouristAttractionTypeRepositoryImpl) GetAll() []domain.TouristAttractionType {
+func (repository *TouristAttractionTypeRepositoryImpl) GetAll() []domain.TouristAttractionType {
 	var touristAttractionTypes []domain.TouristAttractionType
 	if err := repository.DB.Find(&touristAttractionTypes).Error; err != nil {
 		return []domain.TouristAttractionType{}
@@ -48,7 +48,7 @@ func (repository TouristAttractionTypeRepositoryImpl) GetAll() []domain.TouristA
 	return touristAttractionTypes
 }
 
-func (repository TouristAttractionTypeRepositoryImpl) FindByID(id int) (*domain.TouristAttractionType, error) {
+func (repository *TouristAttractionTypeRepositoryImpl) FindByID(id int) (*domain.TouristAttractionType, error) {
 	var touristAttractionType domain.TouristAttractionType
 	if err := repository.DB.Find(&touristAttractionType, "id = ?", id).Error; err != nil {
 		return &domain.TouristAttractionType{}, err
