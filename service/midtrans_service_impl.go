@@ -60,7 +60,7 @@ func (service *MidtransServiceImpl) VerifyPayment(orderID string) (bool, error) 
 					// TODO set transaction status on your database to 'challenge'
 					// e.g: 'Payment status challenged. Please take action on your Merchant Administration Portal
 				} else if transactionStatusResp.FraudStatus == "accept" {
-					return true, nil
+					//return true, nil
 				}
 			} else if transactionStatusResp.TransactionStatus == "settlement" {
 				return true, nil

@@ -25,10 +25,6 @@ func (controller *MidtransControllerImpl) PaymentHandler(e echo.Context) error {
 			"message": err.Error(),
 		})
 	}
-	transactionStatus := notificationPayload["transaction_status"].(string)
-	if transactionStatus == "pending" {
-		return e.JSON(http.StatusOK, web.NewBaseErrorResponse("transaction status pending"))
-	}
 
 	orderID, exists := notificationPayload["order_id"].(string)
 	fmt.Println(notificationPayload)
