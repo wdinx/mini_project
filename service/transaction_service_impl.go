@@ -2,11 +2,10 @@ package service
 
 import (
 	"github.com/go-playground/validator/v10"
-	"github.com/google/uuid"
-	"mini_project/model/domain"
 	"mini_project/model/web"
 	"mini_project/repository"
-	"time"
+	"mini_project/util"
+	"mini_project/util/converter"
 )
 
 type TransactionServiceImpl struct {
@@ -39,21 +38,14 @@ func (service *TransactionServiceImpl) Create(request *web.TransactionCreateRequ
 		return nil, err
 	}
 
-	reservationDate, err := time.Parse("2006-01-02", request.ReservationDate)
-
-	transaction := domain.Transaction{
-		ID:                  uuid.New(),
-		UserID:              request.UserID,
-		TouristAttractionID: request.TouristAttractionID,
-		Qty:                 request.Qty,
-		Amount:              touristAttraction.TicketPrice * float64(request.Qty),
-		ReservationDate:     reservationDate,
-		Status:              "PENDING",
+	request.ReservationDate, err = util.StringToDate(request.ReservationDate.String())
+	if err != nil {
+		return nil, err
 	}
-	// Convert string to time.Time
-	transaction.ReservationDate, err = time.Parse("2006-01-02", request.ReservationDate)
 
-	response, err := service.transactionRepository.Create(&transaction)
+	transaction := converter.ToTransactionModel(request, touristAttraction)
+
+	response, err := service.transactionRepository.Create(transaction)
 	if err != nil {
 		return nil, err
 	}
