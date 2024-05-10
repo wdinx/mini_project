@@ -2,9 +2,9 @@ package service
 
 import (
 	"github.com/go-playground/validator/v10"
-	"mini_project/model/domain"
 	"mini_project/model/web"
 	_interface2 "mini_project/repository"
+	"mini_project/util/converter"
 )
 
 type TouristAttractionTypeServiceImpl struct {
@@ -22,21 +22,16 @@ func (service *TouristAttractionTypeServiceImpl) Create(request *web.TouristAttr
 		return nil, err
 	}
 
-	touristAttractionType := domain.TouristAttractionType{
-		Name: request.Name,
-	}
+	touristAttractionType := converter.ToCreateTouristAttractionType(request)
 
-	result, err := service.touristAttractionTypeRepository.Create(&touristAttractionType)
+	result, err := service.touristAttractionTypeRepository.Create(touristAttractionType)
 	if err != nil {
 		return nil, err
 	}
 
-	response := web.TouristAttractionTypeResponse{
-		ID:   result.ID,
-		Name: result.Name,
-	}
+	response := converter.ToTouristAttractionTypeResponse(result)
 
-	return &response, nil
+	return response, nil
 
 }
 
@@ -58,12 +53,9 @@ func (service *TouristAttractionTypeServiceImpl) Update(request *web.TouristAttr
 		return nil, err
 	}
 
-	response := web.TouristAttractionTypeResponse{
-		ID:   result.ID,
-		Name: result.Name,
-	}
+	response := converter.ToTouristAttractionTypeResponse(result)
 
-	return &response, nil
+	return response, nil
 }
 
 func (service *TouristAttractionTypeServiceImpl) Delete(touristAttractionTypeId int) error {
@@ -85,11 +77,8 @@ func (service *TouristAttractionTypeServiceImpl) GetAll() *[]web.TouristAttracti
 	var responses []web.TouristAttractionTypeResponse
 
 	for _, touristAttractionType := range touristAttractionTypes {
-		response := web.TouristAttractionTypeResponse{
-			ID:   touristAttractionType.ID,
-			Name: touristAttractionType.Name,
-		}
-		responses = append(responses, response)
+		response := converter.ToTouristAttractionTypeResponse(&touristAttractionType)
+		responses = append(responses, *response)
 	}
 
 	return &responses
