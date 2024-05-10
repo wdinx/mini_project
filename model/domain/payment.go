@@ -7,6 +7,6 @@ type Payment struct {
 	TransactionID uuid.UUID   `gorm:"column:transaction_id;not null"`
 	Transaction   Transaction `gorm:"foreignKey:transaction_id;references:id"`
 	Amount        float64     `gorm:"column:amount;not null"`
-	Status        int         `gorm:"column:status;not null"`
+	Status        int         `gorm:"column:status;not null;default:0"`
 	SnapURL       string      `gorm:"column:snap_url;not null"`
 }

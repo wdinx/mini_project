@@ -7,6 +7,7 @@ import (
 	"mini_project/model/domain"
 	"mini_project/model/web"
 	"mini_project/repository"
+	"mini_project/util/converter"
 )
 
 type PaymentServiceImpl struct {
@@ -38,27 +39,18 @@ func NewPaymentService(
 }
 
 func (service *PaymentServiceImpl) InitializePayment(request *web.PaymentRequest) (*web.PaymentResponse, error) {
-	payment := domain.Payment{
-		ID:            uuid.New(),
-		TransactionID: request.TransactionID,
-		Amount:        request.Amount,
-		Status:        0,
-	}
+	payment := converter.ToPaymentModel(request)
 
-	err := service.midtransService.GenerateSnapURL(&payment)
+	err := service.midtransService.GenerateSnapURL(payment)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = service.paymentRepository.Insert(&payment); err != nil {
+	if err = service.paymentRepository.Insert(payment); err != nil {
 		return nil, err
 	}
 
-	return &web.PaymentResponse{
-		ID:      payment.ID,
-		Amount:  payment.Amount,
-		SnapURL: payment.SnapURL,
-	}, nil
+	return converter.ToPaymentResponse(payment), nil
 }
 
 func (service *PaymentServiceImpl) ConfirmedPayment(id string) error {
