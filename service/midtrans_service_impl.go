@@ -28,7 +28,7 @@ func NewMidtransService(cnf *config.Config) MidtransService {
 func (service *MidtransServiceImpl) GenerateSnapURL(payment *domain.Payment) error {
 	req := &snap.Request{
 		TransactionDetails: midtrans.TransactionDetails{
-			OrderID:  payment.ID,
+			OrderID:  payment.ID.String(),
 			GrossAmt: int64(payment.Amount),
 		},
 	}

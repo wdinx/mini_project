@@ -27,8 +27,3 @@ func (controller *PaymentControllerImpl) InitializePayment(e echo.Context) error
 	}
 	return e.JSON(http.StatusOK, web.NewBaseSuccessResponse("payment initialized successfully", response))
 }
-
-func (controller PaymentControllerImpl) ConfirmedPayment(e echo.Context) error {
-	//TODO implement me
-	panic("implement me")
-}

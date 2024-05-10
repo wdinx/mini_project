@@ -19,13 +19,16 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	touristAttractionTypeRepository := repository.NewTouristAttractionTypeRepository(db)
 	touristAttractionRepository := repository.NewTouristAttractionRepository(db)
 	paymentRepository := repository.NewPaymentRepository(db)
+	transactionRepository := repository.NewTransactionRepository(db)
+	ticketRepository := repository.NewTicketRepository(db)
 
 	adminService := service.NewAdminRepository(adminRepository, validate)
 	userService := service.NewUserService(userRepository, validate)
 	touristAttractionTypeService := service.NewTouristAttractionTypeService(touristAttractionTypeRepository, validate)
 	touristAttractionService := service.NewTouristAttractionService(touristAttractionRepository, validate)
 	midtransService := service.NewMidtransService(config)
-	paymentService := service.NewPaymentService(paymentRepository, midtransService, touristAttractionRepository)
+	paymentService := service.NewPaymentService(paymentRepository, midtransService, touristAttractionService, ticketRepository, transactionRepository)
+	transactionService := service.NewTransactionService(transactionRepository, touristAttractionRepository, paymentService, validate)
 
 	adminController := controller.NewAdminController(adminService)
 	userController := controller.NewUserController(userService)
@@ -33,7 +36,7 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	touristAttractionTypeController := controller.NewTouristAttractionTypeController(touristAttractionTypeService)
 	touristAttractionController := controller.NewTouristAttractionController(touristAttractionService)
 	midtransController := controller.NewMidtransController(midtransService, paymentService)
-	paymentController := controller.NewPaymentController(paymentService)
+	transactionController := controller.NewTransactionController(transactionService)
 
 	e.GET("/image/:image", fileController.ShowFile)
 
@@ -66,6 +69,6 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	eUser.Use(echojwt.JWT([]byte(constant.USER_SECRET_JWT)))
 
 	// Route for Payment
-	eUser.POST("/payments/initialize", paymentController.InitializePayment)
+	eUser.POST("/payments/initialize", transactionController.InitializeTransaction)
 
 }

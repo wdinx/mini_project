@@ -1,15 +1,15 @@
 package web
 
+import "github.com/google/uuid"
+
 type PaymentRequest struct {
-	Amount              float64 `validate:"required" json:"amount" form:"amount"`
-	UserID              int     `validate:"required" json:"user_id" form:"user_id"`
-	TouristAttractionID int     `validate:"required" json:"tourist_attraction_id" form:"tourist_attraction_id"`
+	Amount        float64   `validate:"required" json:"amount" form:"amount"`
+	TransactionID uuid.UUID `validate:"required" json:"transaction_id" form:"transaction_id"`
 }
 
 type PaymentResponse struct {
-	ID                string                    `json:"id"`
-	Amount            float64                   `json:"amount"`
-	User              UserLoginResponse         `json:"user"`
-	TouristAttraction TouristAttractionResponse `json:"tourist_attraction"`
-	SnapURL           string                    `json:"snap_url"`
+	ID      uuid.UUID `json:"id"`
+	Amount  float64   `json:"amount"`
+	SnapURL string    `json:"snap_url"`
+	Status  int       `json:"status"`
 }

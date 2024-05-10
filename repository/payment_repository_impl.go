@@ -14,21 +14,21 @@ func NewPaymentRepository(db *gorm.DB) PaymentRepository {
 }
 
 func (repository *PaymentRepositoryImpl) FindByID(id string) (payment *domain.Payment, err error) {
-	if err = repository.db.First(&payment, "id LIKE ?", id).Error; err != nil {
+	if err = repository.db.Preload("Transaction").First(&payment, "id LIKE ?", id).Error; err != nil {
 		return nil, err
 	}
 	return payment, nil
 }
 
 func (repository *PaymentRepositoryImpl) Insert(payment *domain.Payment) error {
-	if err := repository.db.Create(payment).Error; err != nil {
+	if err := repository.db.Create(&payment).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func (repository *PaymentRepositoryImpl) Update(payment *domain.Payment) error {
-	if err := repository.db.Save(payment).Error; err != nil {
+	if err := repository.db.Save(&payment).Error; err != nil {
 		return err
 	}
 	return nil

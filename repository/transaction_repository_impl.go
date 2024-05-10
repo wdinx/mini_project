@@ -13,11 +13,11 @@ func NewTransactionRepository(DB *gorm.DB) TransactionRepository {
 	return &TransactionRepositoryImpl{DB: DB}
 }
 
-func (repository *TransactionRepositoryImpl) Create(transaction *domain.Transaction) error {
+func (repository *TransactionRepositoryImpl) Create(transaction *domain.Transaction) (*domain.Transaction, error) {
 	if err := repository.DB.Create(&transaction).Error; err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return transaction, nil
 }
 
 func (repository *TransactionRepositoryImpl) Delete(transactionID int) error {

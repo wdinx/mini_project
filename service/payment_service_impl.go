@@ -10,27 +10,41 @@ import (
 )
 
 type PaymentServiceImpl struct {
-	paymentRepository           repository.PaymentRepository
-	midtransService             MidtransService
-	touristAttractionRepository repository.TouristAttractionRepository
+	paymentRepository        repository.PaymentRepository
+	midtransService          MidtransService
+	touristAttractionService TouristAttractionService
+	ticketRepository         repository.TicketRepository
+	transactionRepository    repository.TransactionRepository
 }
 
-func NewPaymentService(paymentRepository repository.PaymentRepository, midtransService MidtransService, touristAttractionRepository repository.TouristAttractionRepository) PaymentService {
+func NewPaymentService(
+	paymentRepository repository.PaymentRepository,
+	midtransService MidtransService,
+	touristAttractionService TouristAttractionService,
+	ticketRepository repository.TicketRepository,
+	transactionRepository repository.TransactionRepository) PaymentService {
+
+	if paymentRepository == nil || midtransService == nil || touristAttractionService == nil || ticketRepository == nil || transactionRepository == nil {
+		fmt.Println("PaymentService initialization failed")
+	}
+
 	return &PaymentServiceImpl{
-		paymentRepository:           paymentRepository,
-		midtransService:             midtransService,
-		touristAttractionRepository: touristAttractionRepository,
+		paymentRepository:        paymentRepository,
+		midtransService:          midtransService,
+		touristAttractionService: touristAttractionService,
+		ticketRepository:         ticketRepository,
+		transactionRepository:    transactionRepository,
 	}
 }
 
 func (service *PaymentServiceImpl) InitializePayment(request *web.PaymentRequest) (*web.PaymentResponse, error) {
 	payment := domain.Payment{
-		ID:                  uuid.NewString(),
-		UserID:              request.UserID,
-		TouristAttractionID: request.TouristAttractionID,
-		Amount:              request.Amount,
-		Status:              0,
+		ID:            uuid.New(),
+		TransactionID: request.TransactionID,
+		Amount:        request.Amount,
+		Status:        0,
 	}
+
 	err := service.midtransService.GenerateSnapURL(&payment)
 	if err != nil {
 		return nil, err
@@ -40,62 +54,55 @@ func (service *PaymentServiceImpl) InitializePayment(request *web.PaymentRequest
 		return nil, err
 	}
 
-	userResponse := web.UserLoginResponse{
-		ID:    payment.UserID,
-		Name:  payment.User.Name,
-		Email: payment.User.Email,
-	}
-
-	touristAttraction := web.TouristAttractionResponse{
-		Id:          payment.TouristAttractionID,
-		Name:        payment.TouristAttraction.Name,
-		Description: payment.TouristAttraction.Description,
-		Location:    payment.TouristAttraction.Location,
-		TicketPrice: payment.TouristAttraction.TicketPrice,
-		Image:       payment.TouristAttraction.Image,
-	}
-
 	return &web.PaymentResponse{
-		ID:                payment.ID,
-		Amount:            payment.Amount,
-		User:              userResponse,
-		TouristAttraction: touristAttraction,
-		SnapURL:           payment.SnapURL,
+		ID:      payment.ID,
+		Amount:  payment.Amount,
+		SnapURL: payment.SnapURL,
 	}, nil
 }
 
 func (service *PaymentServiceImpl) ConfirmedPayment(id string) error {
-	fmt.Println(id)
 	payment, err := service.paymentRepository.FindByID(id)
 	if err != nil {
-		fmt.Println("data payment tidak ditemukan")
 		return err
 	}
-
+	// Check if payment is found
 	if *payment == (domain.Payment{}) {
-		fmt.Println("data payment tidak ada")
 		return errors.New("payment not found")
 	}
+	// Check if payment is already confirmed
+	if payment.Status == 1 {
+		return errors.New("payment already confirmed")
+	}
 
-	fmt.Println(payment.TouristAttractionID)
-
-	touristAttraction, err := service.touristAttractionRepository.FindByID(payment.TouristAttractionID)
+	// Action to update balance
+	updateTouristAttraction := web.TouristAttractionUpdateRequest{
+		ID:      payment.Transaction.TouristAttractionID,
+		Balance: payment.Amount,
+	}
+	err = service.touristAttractionService.UpdateBalanceById(&updateTouristAttraction)
 	if err != nil {
-		fmt.Println("data tempat wisata tidak ditemukan")
 		return err
 	}
-	if *touristAttraction == (domain.TouristAttraction{}) {
-		fmt.Println("data tempat wisata tidak ada")
-		return errors.New("tourist attraction not found")
-	}
-	fmt.Println(touristAttraction.Balance, "and", payment.Amount)
-	touristAttraction.Balance += int(payment.Amount)
-	fmt.Println(touristAttraction.Balance)
-	data, err := service.touristAttractionRepository.Update(touristAttraction)
+
+	// Action to update payment status
+	payment.Status = 1
+	err = service.paymentRepository.Update(payment)
 	if err != nil {
-		fmt.Println("data payment tidak berhasil di update", data)
 		return err
 	}
-	fmt.Println("data berhasil di update")
+
+	// Action to create ticket
+	ticket := domain.Ticket{
+		ID:                  uuid.New(),
+		TouristAttractionID: payment.Transaction.TouristAttractionID,
+		UserID:              payment.Transaction.UserID,
+		TransactionID:       payment.Transaction.ID,
+		ReservationDate:     payment.Transaction.ReservationDate,
+	}
+	if err = service.ticketRepository.Insert(&ticket); err != nil {
+		return err
+	}
+
 	return nil
 }

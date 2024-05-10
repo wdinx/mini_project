@@ -5,6 +5,6 @@ import (
 )
 
 type TransactionService interface {
-	Create(request *web.TransactionCreateRequest) error
+	Create(request *web.TransactionCreateRequest) (*web.PaymentResponse, error)
 	Delete(transactionID int) error
 }

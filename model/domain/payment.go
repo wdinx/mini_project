@@ -1,12 +1,12 @@
 package domain
 
+import "github.com/google/uuid"
+
 type Payment struct {
-	ID                  string            `gorm:"column:id;primaryKey;autoIncrement;not null"`
-	UserID              int               `gorm:"column:user_id;not null"`
-	User                User              `gorm:"foreignKey:user_id;references:id"`
-	TouristAttractionID int               `gorm:"column:tourist_attraction_id;not null"`
-	TouristAttraction   TouristAttraction `gorm:"foreignKey:TouristAttractionID;references:id"`
-	Amount              float64           `gorm:"column:amount;not null"`
-	Status              int               `gorm:"column:status;not null"`
-	SnapURL             string            `gorm:"column:snap_url;not null"`
+	ID            uuid.UUID   `gorm:"column:id;primaryKey;autoIncrement;not null;default:uuid_generate_v4();type:varchar"`
+	TransactionID uuid.UUID   `gorm:"column:transaction_id;not null"`
+	Transaction   Transaction `gorm:"foreignKey:transaction_id;references:id"`
+	Amount        float64     `gorm:"column:amount;not null"`
+	Status        int         `gorm:"column:status;not null"`
+	SnapURL       string      `gorm:"column:snap_url;not null"`
 }

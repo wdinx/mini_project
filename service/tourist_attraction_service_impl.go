@@ -83,23 +83,21 @@ func (service *TouristAttractionServiceImpl) Update(request *web.TouristAttracti
 	return &touristAttractionResponse, nil
 }
 
-func (service *TouristAttractionServiceImpl) UpdateBalanceById(request *web.TouristAttractionUpdateRequest) (*web.TouristAttractionBalanceResponse, error) {
+func (service *TouristAttractionServiceImpl) UpdateBalanceById(request *web.TouristAttractionUpdateRequest) error {
 
-	touristAttraction := domain.TouristAttraction{
-		ID:      request.ID,
-		Balance: request.Balance,
-	}
-
-	result, err := service.touristAttractionRepository.UpdateBalanceById(&touristAttraction)
+	touristAttraction, err := service.touristAttractionRepository.FindByID(request.ID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	touristAttractionBalanceResponse := web.TouristAttractionBalanceResponse{
-		Id:      result.ID,
-		Balance: result.Balance,
+	touristAttraction.Balance += request.Balance
+
+	_, err = service.touristAttractionRepository.UpdateBalanceById(touristAttraction)
+	if err != nil {
+		return err
 	}
-	return &touristAttractionBalanceResponse, nil
+
+	return nil
 }
 
 func (service *TouristAttractionServiceImpl) GetAllTouristAttraction() (*[]web.TouristAttractionResponse, error) {

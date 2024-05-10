@@ -1,9 +1,11 @@
 package web
 
 type TransactionCreateRequest struct {
-	UserID              int `json:"user_id" validate:"required"`
-	TouristAttractionID int `json:"tourist_attraction_id" validate:"required"`
-	Qty                 int `json:"qty" validate:"required"`
+	UserID              uint   `json:"user_id" validate:"required"`
+	TouristAttractionID int    `json:"tourist_attraction_id" validate:"required"`
+	Qty                 int    `json:"qty"`
+	ReservationDate     string `json:"reservation_date" validate:"required"`
+	Status              string `json:"status"`
 }
 
 type TransactionCreateResponse struct {

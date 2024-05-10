@@ -32,9 +32,10 @@ func (service *AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web
 	util.PanicIfError(err)
 
 	insertAdmin := domain.Admin{
-		Name:     admin.Name,
-		Username: admin.Username,
-		Password: admin.Password,
+		Name:                admin.Name,
+		Username:            admin.Username,
+		Password:            admin.Password,
+		TouristAttractionID: admin.TouristAttractionID,
 	}
 
 	adminResponse, err := service.adminRepository.Register(&insertAdmin)
