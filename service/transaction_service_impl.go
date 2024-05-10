@@ -5,23 +5,22 @@ import (
 	"github.com/google/uuid"
 	"mini_project/model/domain"
 	"mini_project/model/web"
-	_interface2 "mini_project/repository/interface"
-	"mini_project/service/interface"
+	"mini_project/repository"
 	"time"
 )
 
 type TransactionServiceImpl struct {
-	transactionRepository       _interface2.TransactionRepository
-	touristAttractionRepository _interface2.TouristAttractionRepository
-	paymentService              _interface.PaymentService
+	transactionRepository       repository.TransactionRepository
+	touristAttractionRepository repository.TouristAttractionRepository
+	paymentService              PaymentService
 	validator                   *validator.Validate
 }
 
 func NewTransactionService(
-	transactionRepository _interface2.TransactionRepository,
-	touristAttractionRepository _interface2.TouristAttractionRepository,
-	paymentService _interface.PaymentService,
-	validator *validator.Validate) _interface.TransactionService {
+	transactionRepository repository.TransactionRepository,
+	touristAttractionRepository repository.TouristAttractionRepository,
+	paymentService PaymentService,
+	validator *validator.Validate) TransactionService {
 	return &TransactionServiceImpl{
 		transactionRepository:       transactionRepository,
 		touristAttractionRepository: touristAttractionRepository,

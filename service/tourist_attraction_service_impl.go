@@ -4,8 +4,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"mini_project/model/domain"
 	"mini_project/model/web"
-	_interface2 "mini_project/repository/interface"
-	"mini_project/service/interface"
+	_interface2 "mini_project/repository"
 	"mini_project/util"
 )
 
@@ -14,7 +13,7 @@ type TouristAttractionServiceImpl struct {
 	validator                   *validator.Validate
 }
 
-func NewTouristAttractionService(touristAttractionRepository _interface2.TouristAttractionRepository, validator *validator.Validate) _interface.TouristAttractionService {
+func NewTouristAttractionService(touristAttractionRepository _interface2.TouristAttractionRepository, validator *validator.Validate) TouristAttractionService {
 	return &TouristAttractionServiceImpl{touristAttractionRepository: touristAttractionRepository, validator: validator}
 }
 

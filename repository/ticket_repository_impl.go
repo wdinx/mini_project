@@ -3,14 +3,13 @@ package repository
 import (
 	"gorm.io/gorm"
 	"mini_project/model/domain"
-	"mini_project/repository/interface"
 )
 
 type TicketRepositoryImpl struct {
 	DB *gorm.DB
 }
 
-func NewTicketRepository(db *gorm.DB) _interface.TicketRepository {
+func NewTicketRepository(db *gorm.DB) TicketRepository {
 	return &TicketRepositoryImpl{
 		DB: db,
 	}

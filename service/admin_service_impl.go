@@ -4,19 +4,18 @@ import (
 	"github.com/go-playground/validator/v10"
 	"mini_project/constant"
 	"mini_project/middleware"
-	"mini_project/model/domain"
 	"mini_project/model/web"
-	_interface2 "mini_project/repository/interface"
-	"mini_project/service/interface"
+	"mini_project/repository"
 	"mini_project/util"
+	"mini_project/util/converter"
 )
 
 type AdminServiceImpl struct {
-	adminRepository _interface2.AdminRepository
+	adminRepository repository.AdminRepository
 	validator       *validator.Validate
 }
 
-func NewAdminRepository(adminRepository _interface2.AdminRepository, validator *validator.Validate) _interface.AdminService {
+func NewAdminRepository(adminRepository repository.AdminRepository, validator *validator.Validate) AdminService {
 	return &AdminServiceImpl{
 		adminRepository: adminRepository,
 		validator:       validator,
@@ -32,24 +31,16 @@ func (service *AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web
 	admin.Password, err = util.HashPassword(admin.Password)
 	util.PanicIfError(err)
 
-	insertAdmin := domain.Admin{
-		Name:                admin.Name,
-		Username:            admin.Username,
-		Password:            admin.Password,
-		TouristAttractionID: admin.TouristAttractionID,
-	}
+	insertAdmin := converter.ToAdminModel(admin)
 
-	adminResponse, err := service.adminRepository.Register(&insertAdmin)
+	adminResponse, err := service.adminRepository.Register(insertAdmin)
 	if err != nil {
 		return &web.AdminRegisterResponse{}, constant.ErrInsertDatabase
 	}
 
-	result := web.AdminRegisterResponse{
-		Name:     adminResponse.Name,
-		Username: adminResponse.Username,
-	}
+	result := converter.ToAdminRegisterResponse(adminResponse)
 
-	return &result, nil
+	return result, nil
 }
 
 func (service *AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminLoginResponse, error) {
@@ -69,11 +60,7 @@ func (service *AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminL
 
 	token, err := middleware.CreateTokeForAdmin(int(result.ID), result.Username)
 
-	response := web.AdminLoginResponse{
-		Name:     result.Name,
-		Username: result.Username,
-		Token:    token,
-	}
+	response := converter.ToAdminLoginResponse(result, token)
 
-	return &response, nil
+	return response, nil
 }

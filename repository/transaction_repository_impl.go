@@ -3,14 +3,13 @@ package repository
 import (
 	"gorm.io/gorm"
 	"mini_project/model/domain"
-	"mini_project/repository/interface"
 )
 
 type TransactionRepositoryImpl struct {
 	DB *gorm.DB
 }
 
-func NewTransactionRepository(DB *gorm.DB) _interface.TransactionRepository {
+func NewTransactionRepository(DB *gorm.DB) TransactionRepository {
 	return &TransactionRepositoryImpl{DB: DB}
 }
 

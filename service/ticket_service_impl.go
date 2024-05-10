@@ -3,8 +3,7 @@ package service
 import (
 	"github.com/go-playground/validator/v10"
 	"mini_project/model/domain"
-	_interface2 "mini_project/repository/interface"
-	"mini_project/service/interface"
+	_interface2 "mini_project/repository"
 )
 
 type TicketServiceImpl struct {
@@ -12,7 +11,7 @@ type TicketServiceImpl struct {
 	validator        *validator.Validate
 }
 
-func NewTicketService(ticketRepository _interface2.TicketRepository, validator *validator.Validate) _interface.TicketService {
+func NewTicketService(ticketRepository _interface2.TicketRepository, validator *validator.Validate) TicketService {
 	return &TicketServiceImpl{ticketRepository: ticketRepository, validator: validator}
 }
 

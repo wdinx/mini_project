@@ -2,17 +2,16 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
-	_interface2 "mini_project/controller/interface"
 	"mini_project/model/web"
-	"mini_project/service/interface"
+	"mini_project/service"
 	"net/http"
 )
 
 type AdminControllerImpl struct {
-	adminService _interface.AdminService
+	adminService service.AdminService
 }
 
-func NewAdminController(adminService _interface.AdminService) _interface2.AdminController {
+func NewAdminController(adminService service.AdminService) AdminController {
 	return &AdminControllerImpl{
 		adminService: adminService,
 	}

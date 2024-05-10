@@ -3,14 +3,13 @@ package repository
 import (
 	"gorm.io/gorm"
 	"mini_project/model/domain"
-	"mini_project/repository/interface"
 )
 
 type UserRepositoryImpl struct {
 	DB *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) _interface.UserRepository {
+func NewUserRepository(db *gorm.DB) UserRepository {
 	return &UserRepositoryImpl{DB: db}
 }
 

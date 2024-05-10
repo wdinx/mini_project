@@ -7,7 +7,6 @@ import (
 	"github.com/midtrans/midtrans-go/snap"
 	"mini_project/config"
 	"mini_project/model/domain"
-	"mini_project/service/interface"
 )
 
 type MidtransServiceImpl struct {
@@ -15,7 +14,7 @@ type MidtransServiceImpl struct {
 	envi           midtrans.EnvironmentType
 }
 
-func NewMidtransService(cnf *config.Config) _interface.MidtransService {
+func NewMidtransService(cnf *config.Config) MidtransService {
 	envi := midtrans.Sandbox
 	if cnf.Midtrans.IsProd {
 		envi = midtrans.Production

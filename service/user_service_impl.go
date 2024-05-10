@@ -6,8 +6,7 @@ import (
 	"mini_project/middleware"
 	"mini_project/model/domain"
 	"mini_project/model/web"
-	_interface2 "mini_project/repository/interface"
-	"mini_project/service/interface"
+	_interface2 "mini_project/repository"
 	"mini_project/util"
 )
 
@@ -16,7 +15,7 @@ type UserServiceImpl struct {
 	validator      *validator.Validate
 }
 
-func NewUserService(userRepository _interface2.UserRepository, validator *validator.Validate) _interface.UserService {
+func NewUserService(userRepository _interface2.UserRepository, validator *validator.Validate) UserService {
 	return &UserServiceImpl{userRepository: userRepository, validator: validator}
 }
 

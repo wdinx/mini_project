@@ -6,24 +6,23 @@ import (
 	"github.com/google/uuid"
 	"mini_project/model/domain"
 	"mini_project/model/web"
-	_interface2 "mini_project/repository/interface"
-	"mini_project/service/interface"
+	"mini_project/repository"
 )
 
 type PaymentServiceImpl struct {
-	paymentRepository        _interface2.PaymentRepository
-	midtransService          _interface.MidtransService
-	touristAttractionService _interface.TouristAttractionService
-	ticketRepository         _interface2.TicketRepository
-	transactionRepository    _interface2.TransactionRepository
+	paymentRepository        repository.PaymentRepository
+	midtransService          MidtransService
+	touristAttractionService TouristAttractionService
+	ticketRepository         repository.TicketRepository
+	transactionRepository    repository.TransactionRepository
 }
 
 func NewPaymentService(
-	paymentRepository _interface2.PaymentRepository,
-	midtransService _interface.MidtransService,
-	touristAttractionService _interface.TouristAttractionService,
-	ticketRepository _interface2.TicketRepository,
-	transactionRepository _interface2.TransactionRepository) _interface.PaymentService {
+	paymentRepository repository.PaymentRepository,
+	midtransService MidtransService,
+	touristAttractionService TouristAttractionService,
+	ticketRepository repository.TicketRepository,
+	transactionRepository repository.TransactionRepository) PaymentService {
 
 	if paymentRepository == nil || midtransService == nil || touristAttractionService == nil || ticketRepository == nil || transactionRepository == nil {
 		fmt.Println("PaymentService initialization failed")

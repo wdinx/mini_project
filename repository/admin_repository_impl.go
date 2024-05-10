@@ -3,14 +3,13 @@ package repository
 import (
 	"gorm.io/gorm"
 	"mini_project/model/domain"
-	"mini_project/repository/interface"
 )
 
 type AdminRepositoryImpl struct {
 	DB *gorm.DB
 }
 
-func NewAdminRepository(db *gorm.DB) _interface.AdminRepository {
+func NewAdminRepository(db *gorm.DB) AdminRepository {
 	return &AdminRepositoryImpl{
 		DB: db,
 	}
