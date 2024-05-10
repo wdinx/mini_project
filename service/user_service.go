@@ -6,6 +6,6 @@ import (
 )
 
 type UserService interface {
-	Login(request web.UserLoginRequest) (*web.UserLoginResponse, error)
-	Register(request web.UserRegisterRequest) (domain.User, error)
+	Login(request *web.UserLoginRequest) (*web.UserResponse, error)
+	Register(request *web.UserRegisterRequest) (*domain.User, error)
 }

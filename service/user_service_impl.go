@@ -1,13 +1,13 @@
 package service
 
 import (
-	"fmt"
 	"github.com/go-playground/validator/v10"
 	"mini_project/middleware"
 	"mini_project/model/domain"
 	"mini_project/model/web"
 	_interface2 "mini_project/repository"
 	"mini_project/util"
+	"mini_project/util/converter"
 )
 
 type UserServiceImpl struct {
@@ -19,7 +19,7 @@ func NewUserService(userRepository _interface2.UserRepository, validator *valida
 	return &UserServiceImpl{userRepository: userRepository, validator: validator}
 }
 
-func (service *UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLoginResponse, error) {
+func (service *UserServiceImpl) Login(request *web.UserLoginRequest) (*web.UserResponse, error) {
 	if err := service.validator.Struct(request); err != nil {
 		return nil, err
 	}
@@ -36,42 +36,24 @@ func (service *UserServiceImpl) Login(request web.UserLoginRequest) (*web.UserLo
 	token, err := middleware.CreateTokenForUser(int(user.ID), user.Name)
 	util.PanicIfError(err)
 
-	response := web.UserLoginResponse{
-		ID:    int(user.ID),
-		Name:  user.Name,
-		Email: user.Email,
-		Image: user.ProfilePicture,
-		Token: token,
-	}
+	response := converter.ToUserLoginResponse(user, token)
 
-	return &response, nil
+	return response, nil
 }
 
-func (service *UserServiceImpl) Register(request web.UserRegisterRequest) (domain.User, error) {
+func (service *UserServiceImpl) Register(request *web.UserRegisterRequest) (*domain.User, error) {
 	var err error
 	err = service.validator.Struct(request)
 	if err != nil {
-		return domain.User{}, err
+		return nil, err
 	}
 
-	request.Password, err = util.HashPassword(request.Password)
-	util.PanicIfError(err)
+	user := converter.ToUserModel(request)
 
-	newFileName := util.StoreImageToLocal(request.ProfilePicture, request.Name)
-	fmt.Println(newFileName)
-
-	user := domain.User{
-		Name:           request.Name,
-		Email:          request.Email,
-		Password:       request.Password,
-		NoPhone:        request.NoPhone,
-		ProfilePicture: util.GetImageUrl(newFileName),
-	}
-
-	err = service.userRepository.Register(&user)
+	err = service.userRepository.Register(user)
 
 	if err != nil {
-		return domain.User{}, err
+		return nil, err
 	}
 
 	return user, nil

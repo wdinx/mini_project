@@ -15,10 +15,9 @@ type UserLoginRequest struct {
 	Password string `json:"password" form:"password" validate:"required,min=6,max=200"`
 }
 
-type UserLoginResponse struct {
-	ID    int    `json:"id"`
+type UserResponse struct {
+	ID    uint   `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 	Token string `json:"token"`
-	Image string `json:"image"`
 }
