@@ -11,7 +11,7 @@ type TransactionCreateRequest struct {
 }
 
 type TransactionCreateResponse struct {
-	User                      UserLoginResponse         `json:"user"`
+	User                      UserResponse              `json:"user"`
 	TouristAttractionResponse TouristAttractionResponse `json:"tourist_attraction"`
 	Qty                       int                       `json:"qty"`
 	Amount                    float64                   `json:"amount"`

@@ -22,7 +22,7 @@ func (controller *UserControllerImpl) Login(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
 
-	result, err := controller.userService.Login(userLoginRequest)
+	result, err := controller.userService.Login(&userLoginRequest)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
 	}
@@ -43,7 +43,7 @@ func (controller *UserControllerImpl) Register(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
 
-	result, err := controller.userService.Register(userRegisterRequest)
+	result, err := controller.userService.Register(&userRegisterRequest)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
 	}

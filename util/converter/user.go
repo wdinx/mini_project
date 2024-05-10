@@ -23,13 +23,6 @@ func ToUserModel(request *web.UserRegisterRequest) *domain.User {
 	}
 }
 
-func ToUserRegisterResponse(admin *domain.Admin) *web.AdminRegisterResponse {
-	return &web.AdminRegisterResponse{
-		Name:     admin.Name,
-		Username: admin.Username,
-	}
-}
-
 func ToUserLoginResponse(admin *domain.User, token string) *web.UserResponse {
 	return &web.UserResponse{
 		ID:    admin.ID,
