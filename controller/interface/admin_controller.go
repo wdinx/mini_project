@@ -1,4 +1,4 @@
-package controller
+package _interface
 
 import "github.com/labstack/echo/v4"
 

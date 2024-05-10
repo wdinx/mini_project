@@ -1,10 +1,10 @@
-package controller
+package _interface
 
 import "github.com/labstack/echo/v4"
 
-type TouristAttractionController interface {
+type TouristAttractionTypeController interface {
 	Create(c echo.Context) error
 	Update(c echo.Context) error
+	Delete(c echo.Context) error
 	GetAll(c echo.Context) error
-	UpdateBalanceById(c echo.Context) error
 }

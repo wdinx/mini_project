@@ -2,17 +2,18 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	_interface2 "mini_project/controller/interface"
 	"mini_project/model/web"
-	"mini_project/service"
+	"mini_project/service/interface"
 	"net/http"
 	"strconv"
 )
 
 type TouristAttractionTypeControllerImpl struct {
-	touristAttractionTypeService service.TouristAttractionTypeService
+	touristAttractionTypeService _interface.TouristAttractionTypeService
 }
 
-func NewTouristAttractionTypeController(touristAttractionTypeService service.TouristAttractionTypeService) TouristAttractionTypeController {
+func NewTouristAttractionTypeController(touristAttractionTypeService _interface.TouristAttractionTypeService) _interface2.TouristAttractionTypeController {
 	return &TouristAttractionTypeControllerImpl{touristAttractionTypeService: touristAttractionTypeService}
 }
 

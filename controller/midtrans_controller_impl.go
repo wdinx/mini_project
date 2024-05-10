@@ -3,17 +3,18 @@ package controller
 import (
 	"fmt"
 	"github.com/labstack/echo/v4"
+	_interface2 "mini_project/controller/interface"
 	"mini_project/model/web"
-	"mini_project/service"
+	"mini_project/service/interface"
 	"net/http"
 )
 
 type MidtransControllerImpl struct {
-	midtransService service.MidtransService
-	paymentService  service.PaymentService
+	midtransService _interface.MidtransService
+	paymentService  _interface.PaymentService
 }
 
-func NewMidtransController(midtransService service.MidtransService, paymentService service.PaymentService) MidtransController {
+func NewMidtransController(midtransService _interface.MidtransService, paymentService _interface.PaymentService) _interface2.MidtransController {
 	return &MidtransControllerImpl{midtransService, paymentService}
 }
 

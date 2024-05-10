@@ -2,16 +2,17 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	_interface2 "mini_project/controller/interface"
 	"mini_project/model/web"
-	"mini_project/service"
+	"mini_project/service/interface"
 	"net/http"
 )
 
 type PaymentControllerImpl struct {
-	paymentService service.PaymentService
+	paymentService _interface.PaymentService
 }
 
-func NewPaymentController(paymentService service.PaymentService) PaymentController {
+func NewPaymentController(paymentService _interface.PaymentService) _interface2.PaymentController {
 	return &PaymentControllerImpl{paymentService}
 }
 

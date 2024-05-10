@@ -2,16 +2,17 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	_interface2 "mini_project/controller/interface"
 	"mini_project/model/web"
-	"mini_project/service"
+	"mini_project/service/interface"
 	"net/http"
 )
 
 type TransactionControllerImpl struct {
-	TransactionService service.TransactionService
+	TransactionService _interface.TransactionService
 }
 
-func NewTransactionController(transactionService service.TransactionService) TransactionController {
+func NewTransactionController(transactionService _interface.TransactionService) _interface2.TransactionController {
 	return &TransactionControllerImpl{
 		TransactionService: transactionService,
 	}

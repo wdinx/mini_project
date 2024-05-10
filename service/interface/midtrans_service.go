@@ -1,4 +1,4 @@
-package service
+package _interface
 
 import "mini_project/model/domain"
 

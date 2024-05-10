@@ -3,13 +3,14 @@ package repository
 import (
 	"gorm.io/gorm"
 	"mini_project/model/domain"
+	"mini_project/repository/interface"
 )
 
 type TouristAttractionRepositoryImpl struct {
 	DB *gorm.DB
 }
 
-func NewTouristAttractionRepository(db *gorm.DB) TouristAttractionRepository {
+func NewTouristAttractionRepository(db *gorm.DB) _interface.TouristAttractionRepository {
 	return &TouristAttractionRepositoryImpl{DB: db}
 }
 

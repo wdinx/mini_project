@@ -2,11 +2,12 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	"mini_project/controller/interface"
 )
 
 type FileControllerImpl struct{}
 
-func NewFileController() FileController {
+func NewFileController() _interface.FileController {
 	return &FileControllerImpl{}
 }
 

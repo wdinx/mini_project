@@ -3,13 +3,14 @@ package repository
 import (
 	"gorm.io/gorm"
 	"mini_project/model/domain"
+	"mini_project/repository/interface"
 )
 
 type PaymentRepositoryImpl struct {
 	db *gorm.DB
 }
 
-func NewPaymentRepository(db *gorm.DB) PaymentRepository {
+func NewPaymentRepository(db *gorm.DB) _interface.PaymentRepository {
 	return &PaymentRepositoryImpl{db}
 }
 

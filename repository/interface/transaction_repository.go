@@ -1,4 +1,4 @@
-package repository
+package _interface
 
 import "mini_project/model/domain"
 

@@ -6,16 +6,17 @@ import (
 	"mini_project/middleware"
 	"mini_project/model/domain"
 	"mini_project/model/web"
-	"mini_project/repository"
+	_interface2 "mini_project/repository/interface"
+	"mini_project/service/interface"
 	"mini_project/util"
 )
 
 type AdminServiceImpl struct {
-	adminRepository repository.AdminRepository
+	adminRepository _interface2.AdminRepository
 	validator       *validator.Validate
 }
 
-func NewAdminRepository(adminRepository repository.AdminRepository, validator *validator.Validate) AdminService {
+func NewAdminRepository(adminRepository _interface2.AdminRepository, validator *validator.Validate) _interface.AdminService {
 	return &AdminServiceImpl{
 		adminRepository: adminRepository,
 		validator:       validator,

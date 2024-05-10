@@ -2,16 +2,17 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	_interface2 "mini_project/controller/interface"
 	"mini_project/model/web"
-	"mini_project/service"
+	"mini_project/service/interface"
 	"net/http"
 )
 
 type UserControllerImpl struct {
-	userService service.UserService
+	userService _interface.UserService
 }
 
-func NewUserController(userService service.UserService) UserController {
+func NewUserController(userService _interface.UserService) _interface2.UserController {
 	return &UserControllerImpl{userService: userService}
 }
 
