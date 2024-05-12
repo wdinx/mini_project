@@ -40,7 +40,7 @@ func ToTouristAttractionResponse(touristAttraction *domain.TouristAttraction) *w
 		Id:                    touristAttraction.ID,
 		Name:                  touristAttraction.Name,
 		Description:           touristAttraction.Description,
-		TouristAttractionType: touristAttraction.TouristAttractionType,
+		TouristAttractionType: *ToTouristAttractionTypeResponse(&touristAttraction.TouristAttractionType),
 		Location:              touristAttraction.Location,
 		TicketPrice:           touristAttraction.TicketPrice,
 		Image:                 touristAttraction.Image,

@@ -1,0 +1,48 @@
+swagger: "2.0"
+info:
+  title: Reservation Ticket
+  description: |- 
+    Reservation Ticket
+  contact:
+    email: wahyuudin2811@gmail.com
+  version: 1.0.0
+host: localhost:5000
+tags:
+  - name: user
+    description: User operations
+  - name: Admin
+    description: Admin operations
+  - name: transaction
+    description: Transaction operations
+  - name: ticket
+    description: Ticket operations
+  - name: payment
+    description: Payment operations
+  - name: tourist attraction
+    description: Tourist Attraction operations
+  - name: tourist attraction type
+    description: Tourist Attraction Type operations
+paths:
+  - /v1/user/login:
+      post:
+        tags:
+          - user
+        summary: Login
+        description: Login
+        operationId: login
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - in: body
+            name: body
+            description: User login
+            required: true
+            schema:
+              $ref: '#/definitions/Login'
+        responses:
+          '200':
+            description: OK
+            schema:
+              -

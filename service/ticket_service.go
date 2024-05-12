@@ -1,8 +1,11 @@
 package service
 
-import "mini_project/model/domain"
+import (
+	"mini_project/model/web"
+)
 
 type TicketService interface {
-	FindByID(id string) (*domain.Ticket, error)
-	FindByUserID(userID int) (*[]domain.Ticket, error)
+	FindByID(id string) (*web.TicketResponse, error)
+	FindByUserID(userID int) (*[]web.TicketResponse, error)
+	FindByTouristAttractionID(touristAttractionID int) (*[]web.TicketResponse, error)
 }

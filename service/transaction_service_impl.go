@@ -38,12 +38,12 @@ func (service *TransactionServiceImpl) Create(request *web.TransactionCreateRequ
 		return nil, err
 	}
 
-	request.ReservationDate, err = util.StringToDate(request.ReservationDate.String())
+	reservationDate, err := util.StringToDate(request.ReservationDate)
 	if err != nil {
 		return nil, err
 	}
 
-	transaction := converter.ToTransactionModel(request, touristAttraction)
+	transaction := converter.ToTransactionModel(request, touristAttraction, reservationDate)
 
 	response, err := service.transactionRepository.Create(transaction)
 	if err != nil {

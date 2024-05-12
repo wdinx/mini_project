@@ -23,11 +23,21 @@ func ToUserModel(request *web.UserRegisterRequest) *domain.User {
 	}
 }
 
-func ToUserLoginResponse(admin *domain.User, token string) *web.UserResponse {
-	return &web.UserResponse{
+func ToUserLoginResponse(admin *domain.User, token string) *web.UserLoginResponse {
+	return &web.UserLoginResponse{
 		ID:    admin.ID,
 		Name:  admin.Name,
 		Email: admin.Email,
 		Token: token,
+	}
+}
+
+func ToUserResponse(user *domain.User) *web.UserResponse {
+	return &web.UserResponse{
+		ID:             user.ID,
+		Name:           user.Name,
+		Email:          user.Email,
+		NoPhone:        user.NoPhone,
+		ProfilePicture: user.ProfilePicture,
 	}
 }

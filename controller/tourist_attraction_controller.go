@@ -7,4 +7,5 @@ type TouristAttractionController interface {
 	Update(c echo.Context) error
 	GetAll(c echo.Context) error
 	UpdateBalanceById(c echo.Context) error
+	GetById(c echo.Context) error
 }

@@ -9,4 +9,5 @@ type TouristAttractionService interface {
 	Update(request *web.TouristAttractionUpdateRequest) (*web.TouristAttractionResponse, error)
 	UpdateBalanceById(request *web.TouristAttractionUpdateRequest) error
 	GetAllTouristAttraction() (*[]web.TouristAttractionResponse, error)
+	GetTouristAttractionById(id int) (*web.TouristAttractionResponse, error)
 }

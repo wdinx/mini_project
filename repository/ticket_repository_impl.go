@@ -16,21 +16,21 @@ func NewTicketRepository(db *gorm.DB) TicketRepository {
 }
 
 func (repository *TicketRepositoryImpl) FindByID(id string) (ticket *domain.Ticket, err error) {
-	if err = repository.DB.Where("id LIKE ?", id).First(&ticket).Error; err != nil {
+	if err = repository.DB.Preload("User").Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Where("id LIKE ?", id).First(&ticket).Error; err != nil {
 		return nil, err
 	}
 	return ticket, nil
 }
 
 func (repository *TicketRepositoryImpl) FindByUserID(userID int) (tickets *[]domain.Ticket, err error) {
-	if err = repository.DB.Preload("User").Where("user_id = ?", userID).Find(&tickets).Error; err != nil {
+	if err = repository.DB.Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Preload("User").Where("user_id = ?", userID).Find(&tickets).Error; err != nil {
 		return nil, err
 	}
 	return tickets, nil
 }
 
 func (repository *TicketRepositoryImpl) FindByTouristAttractionID(touristAttractionID int) (tickets *[]domain.Ticket, err error) {
-	if err = repository.DB.Preload("TouristAttraction").Where("tourist_attraction_id = ?", touristAttractionID).Find(&tickets).Error; err != nil {
+	if err = repository.DB.Preload("User").Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Where("tourist_attraction_id = ?", touristAttractionID).Find(&tickets).Error; err != nil {
 		return nil, err
 	}
 	return tickets, nil

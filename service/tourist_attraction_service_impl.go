@@ -75,3 +75,13 @@ func (service *TouristAttractionServiceImpl) GetAllTouristAttraction() (*[]web.T
 	}
 	return &touristAttractionResponses, nil
 }
+
+func (service *TouristAttractionServiceImpl) GetTouristAttractionById(id int) (*web.TouristAttractionResponse, error) {
+	result, err := service.touristAttractionRepository.FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	touristAttractionResponse := converter.ToTouristAttractionResponse(result)
+	return touristAttractionResponse, nil
+}

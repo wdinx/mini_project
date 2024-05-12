@@ -20,13 +20,13 @@ func NewTransactionController(transactionService service.TransactionService) Tra
 func (controller *TransactionControllerImpl) InitializeTransaction(ctx echo.Context) error {
 	request := new(web.TransactionCreateRequest)
 	if err := ctx.Bind(&request); err != nil {
-		return ctx.JSON(http.StatusBadRequest, err.Error())
+		return ctx.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
 
 	response, err := controller.TransactionService.Create(request)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, err.Error())
+		return ctx.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
 	}
 
-	return ctx.JSON(http.StatusOK, response)
+	return ctx.JSON(http.StatusOK, web.NewBaseSuccessResponse("transaction created successfully", response))
 }

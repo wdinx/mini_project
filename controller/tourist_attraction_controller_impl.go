@@ -76,3 +76,15 @@ func (controller *TouristAttractionControllerImpl) UpdateBalanceById(c echo.Cont
 	//}
 	//return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction balance updated successfully", result))
 }
+
+func (controller *TouristAttractionControllerImpl) GetById(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
+	}
+	result, err := controller.touristAttractionService.GetTouristAttractionById(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+	}
+	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("get tourist attraction by id success", *result))
+}

@@ -2,7 +2,6 @@ package web
 
 import (
 	"mime/multipart"
-	"mini_project/model/domain"
 )
 
 type TouristAttractionRequest struct {
@@ -26,14 +25,14 @@ type TouristAttractionUpdateRequest struct {
 }
 
 type TouristAttractionResponse struct {
-	Id                    int                          `json:"id"`
-	Name                  string                       `json:"name"`
-	Description           string                       `json:"description"`
-	TouristAttractionType domain.TouristAttractionType `json:"tourist_attraction_type"`
-	Location              string                       `json:"location"`
-	TicketPrice           float64                      `json:"ticket_price"`
-	Image                 string                       `json:"image"`
-	Balance               float64                      `json:"balance"`
+	Id                    int                           `json:"id"`
+	Name                  string                        `json:"name"`
+	Description           string                        `json:"description"`
+	TouristAttractionType TouristAttractionTypeResponse `json:"tourist_attraction_type"`
+	Location              string                        `json:"location"`
+	TicketPrice           float64                       `json:"ticket_price"`
+	Image                 string                        `json:"image"`
+	Balance               float64                       `json:"balance"`
 }
 
 type TouristAttractionBalanceResponse struct {

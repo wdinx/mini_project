@@ -8,7 +8,7 @@ import (
 
 func ToPaymentModel(request *web.PaymentRequest) *domain.Payment {
 	return &domain.Payment{
-		ID:            uuid.UUID{},
+		ID:            uuid.New(),
 		TransactionID: request.TransactionID,
 		Amount:        request.Amount,
 	}

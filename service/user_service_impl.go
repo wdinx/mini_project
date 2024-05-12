@@ -19,7 +19,7 @@ func NewUserService(userRepository _interface2.UserRepository, validator *valida
 	return &UserServiceImpl{userRepository: userRepository, validator: validator}
 }
 
-func (service *UserServiceImpl) Login(request *web.UserLoginRequest) (*web.UserResponse, error) {
+func (service *UserServiceImpl) Login(request *web.UserLoginRequest) (*web.UserLoginResponse, error) {
 	if err := service.validator.Struct(request); err != nil {
 		return nil, err
 	}

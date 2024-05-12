@@ -15,7 +15,7 @@ type AdminServiceImpl struct {
 	validator       *validator.Validate
 }
 
-func NewAdminRepository(adminRepository repository.AdminRepository, validator *validator.Validate) AdminService {
+func NewAdminService(adminRepository repository.AdminRepository, validator *validator.Validate) AdminService {
 	return &AdminServiceImpl{
 		adminRepository: adminRepository,
 		validator:       validator,
