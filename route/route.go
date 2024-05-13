@@ -42,6 +42,12 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	ticketController := controller.NewTicketController(ticketService)
 
 	e.GET("/image/:image", fileController.ShowFile)
+	e.GET("/", func(c echo.Context) error {
+		return c.JSON(200, map[string]interface{}{
+			"status":  200,
+			"message": "succesfully connected",
+		})
+	})
 
 	// Route For Admin Login and Register
 	eA := e.Group("/v1/admin")
