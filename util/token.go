@@ -20,11 +20,3 @@ func ParsingToken(token string) (*jwt.Token, error) {
 
 	return result, nil
 }
-
-func GetUserIDFromToken(token *jwt.Token) int {
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if ok {
-		return int(claims["userId"].(float64))
-	}
-	return 0
-}

@@ -742,6 +742,226 @@
         }
       }
     },
+    "/v1/admin/tourist-attraction/{touristAttractionID}/tickets": {
+      "get": {
+        "summary": "Get All Ticket By Tourist Attraction ID",
+        "description": "Get All Ticket By Tourist Attraction ID",
+        "tags": [
+          "Ticket"
+        ],
+        "parameters": [
+          {
+            "name": "touristAttractionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "user": {
+                            "$ref": "#/components/schemas/UserResponse"
+                          },
+                          "tourist_attraction": {
+                            "$ref": "#/components/schemas/TouristAttraction"
+                          },
+                          "ReservationDate": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/ticket/{ticketID}": {
+      "get": {
+        "summary": "Get Ticket By ID",
+        "description": "Get Ticket By ID",
+        "tags": [
+          "Ticket"
+        ],
+        "parameters": [
+          {
+            "name": "ticketID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "user": {
+                          "$ref": "#/components/schemas/UserResponse"
+                        },
+                        "tourist_attraction": {
+                          "$ref": "#/components/schemas/TouristAttraction"
+                        },
+                        "ReservationDate": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/tickets": {
+      "get": {
+        "summary": "Get All Ticket By User ID",
+        "description": "Get All Ticket By User ID",
+        "tags": [
+          "Ticket"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "user": {
+                            "$ref": "#/components/schemas/UserResponse"
+                          },
+                          "tourist_attraction": {
+                            "$ref": "#/components/schemas/TouristAttraction"
+                          },
+                          "ReservationDate": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/ticket/{ticketID}": {
+      "get": {
+        "summary": "Get Ticket By ID",
+        "description": "Get Ticket By ID",
+        "tags": [
+          "Ticket"
+        ],
+        "parameters": [
+          {
+            "name": "ticketID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "user": {
+                          "$ref": "#/components/schemas/UserResponse"
+                        },
+                        "tourist_attraction": {
+                          "$ref": "#/components/schemas/TouristAttraction"
+                        },
+                        "ReservationDate": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/user/transaction/initialize": {
       "post": {
         "summary": "Initialize Transaction",
@@ -843,6 +1063,66 @@
           "profile_picture": {
             "type": "string",
             "format": "binary"
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "no_phone": {
+            "type": "string"
+          },
+          "profile_picture": {
+            "type": "string"
+          }
+        }
+      },
+      "TouristAttractionType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "TouristAttraction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "tourist_attraction_type": {
+            "$ref": "#/components/schemas/TouristAttractionType"
+          },
+          "location": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "image": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "integer"
           }
         }
       }
