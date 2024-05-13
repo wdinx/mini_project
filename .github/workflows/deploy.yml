@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: push image
-        run: docker push wdinx/ci-cd-task:latest
+        run: docker push wdinx/push:latest
 
 
   deploy:
