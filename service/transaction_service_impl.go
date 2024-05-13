@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+	"fmt"
 	"github.com/go-playground/validator/v10"
 	"mini_project/model/web"
 	"mini_project/repository"
@@ -67,4 +69,33 @@ func (service *TransactionServiceImpl) Delete(transactionID int) error {
 		return err
 	}
 	return nil
+}
+
+func (service *TransactionServiceImpl) GetByUserID(userID int) (*[]web.TransactionResponse, error) {
+	transactions, err := service.transactionRepository.GetByUserID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(*transactions) == 0 {
+		return nil, errors.New("transaction not found")
+	}
+
+	var responses []web.TransactionResponse
+	for _, transaction := range *transactions {
+		response := converter.ToTransactionResponse(&transaction)
+		fmt.Println(*response)
+		responses = append(responses, *response)
+	}
+	return &responses, nil
+}
+
+func (service *TransactionServiceImpl) GetByID(transactionID int) (*web.TransactionResponse, error) {
+	transaction, err := service.transactionRepository.GetByID(transactionID)
+	if err != nil {
+		return nil, err
+	}
+
+	response := converter.ToTransactionResponse(transaction)
+	return response, nil
 }

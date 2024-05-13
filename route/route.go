@@ -82,8 +82,10 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	eUser := e.Group("/v1/user")
 	eUser.Use(echojwt.JWT([]byte(constant.USER_SECRET_JWT)))
 
-	// Route for Payment
+	// Route for Transaction
 	eUser.POST("/transaction/initialize", transactionController.InitializeTransaction)
+	eUser.GET("/transactions", transactionController.GetByUserID)
+	eUser.GET("/transaction/:id", transactionController.GetByID)
 
 	// Route For Ticket
 	eUser.GET("/ticket/:id", ticketController.FindByID)

@@ -8,7 +8,6 @@ import (
 )
 
 func ToTransactionModel(request *web.TransactionCreateRequest, touristAttraction *domain.TouristAttraction, reservationDate time.Time) *domain.Transaction {
-
 	return &domain.Transaction{
 		ID:                  uuid.New(),
 		UserID:              request.UserID,
@@ -17,5 +16,19 @@ func ToTransactionModel(request *web.TransactionCreateRequest, touristAttraction
 		Amount:              touristAttraction.TicketPrice * float64(request.Qty),
 		ReservationDate:     reservationDate,
 		Status:              "PENDING",
+	}
+}
+
+func ToTransactionResponse(transaction *domain.Transaction) *web.TransactionResponse {
+	return &web.TransactionResponse{
+		ID:                  transaction.ID,
+		UserID:              transaction.UserID,
+		User:                *ToUserResponse(&transaction.User),
+		TouristAttractionID: transaction.TouristAttractionID,
+		TouristAttraction:   *ToTouristAttractionResponse(&transaction.TouristAttraction),
+		Qty:                 transaction.Qty,
+		Amount:              transaction.Amount,
+		ReservationDate:     transaction.ReservationDate,
+		Status:              transaction.Status,
 	}
 }
