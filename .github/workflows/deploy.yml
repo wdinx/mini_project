@@ -34,5 +34,5 @@ jobs:
           script: |
             cd ~/
             docker pull wdinx/mini-project:latest
-            docker container rm -f ci-cd-task
-            docker run -d --name mini-project -p 3000:1326 --network bridge --env DBHOST=${{ secrets.DBHOST }} --env DBPORT=${{ secrets.DBPORT }} --env DBUSER=${{ secrets.DBUSER }} --env DBPASS=${{ secrets.DBPASS }} --env DBNAME=${{ secrets.DBNAME }}  wdinx/mini-project:latest
+            docker container rm -f mini-project
+            docker run -d --name mini-project -p 3000:1326 --network bridge --env DBHOST=${{ secrets.DBHOST }} --env DBPORT=${{ secrets.DBPORT }} --env DBUSER=${{ secrets.DBUSER }} --env DBPASS=${{ secrets.DBPASS }} --env DBNAME=${{ secrets.DBNAME }} --env BASEURL=${{ secrets.BASEURL }} --env MIDTRANS_KEY=${{ secrets.MIDTRANS_KEY }} --env MIDTRANS_ENV=${{ secrets.MIDTRANS_ENV }} wdinx/mini-project:latest
