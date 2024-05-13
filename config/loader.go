@@ -9,7 +9,7 @@ import (
 func Get() *Config {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("error when loading env file: %s", err.Error())
+		log.Println("error when loading env file: %s, Environment from Docker Will Be Load", err.Error())
 	}
 	return &Config{
 		Database: Database{
