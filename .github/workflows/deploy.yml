@@ -33,6 +33,6 @@ jobs:
           passphrase: ${{ secrets.PASSPRHASE }}
           script: |
             cd ~/
-            docker pull wdinx/ci-cd-task:latest
+            docker pull wdinx/mini-project:latest
             docker container rm -f ci-cd-task
-            docker run -d --name ci-cd-task -p 1325:1324 --network bridge --env DBHOST=${{ secrets.DBHOST }} --env DBPORT=${{ secrets.DBPORT }} --env DBUSER=${{ secrets.DBUSER }} --env DBPASS=${{ secrets.DBPASS }} --env DBNAME=${{ secrets.DBNAME }}  wdinx/ci-cd-task:latest
+            docker run -d --name mini-project -p 3000:1326 --network bridge --env DBHOST=${{ secrets.DBHOST }} --env DBPORT=${{ secrets.DBPORT }} --env DBUSER=${{ secrets.DBUSER }} --env DBPASS=${{ secrets.DBPASS }} --env DBNAME=${{ secrets.DBNAME }}  wdinx/ci-cd-task:latest
