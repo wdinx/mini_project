@@ -6,7 +6,7 @@ import (
 )
 
 type Transaction struct {
-	ID                  uuid.UUID         `gorm:"column:id;type:varchar(255);primaryKey;not null;default:uuid_generate_v4()"`
+	ID                  uuid.UUID         `gorm:"column:id;type:varchar(255);primaryKey;not null;"`
 	UserID              uint              `gorm:"column:user_id"`
 	User                User              `gorm:"foreignKey:UserID;references:ID"`
 	TouristAttractionID int               `gorm:"column:tourist_attraction_id;not null"`
