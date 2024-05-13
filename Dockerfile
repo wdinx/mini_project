@@ -15,6 +15,6 @@ WORKDIR /
 #COPY --from=build-stage /app/.env /.env
 COPY --from=build-stage /mini-project /mini-project
 
-EXPOSE 1324
+EXPOSE 3000
 
 ENTRYPOINT ["./mini-project"]
