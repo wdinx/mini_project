@@ -23,5 +23,12 @@ func Get() *Config {
 			Key:    os.Getenv("MIDTRANS_KEY"),
 			IsProd: os.Getenv("MIDTRANS_ENV") == "production",
 		},
+		DigitalOceanSpaces: DigitalOceanSpaces{
+			AccessToken: os.Getenv("DO_SPACES_ACCESS_TOKEN"),
+			SecretKey:   os.Getenv("DO_SPACES_SECRET_KEY"),
+			Region:      os.Getenv("DO_SPACES_REGION"),
+			Name:        os.Getenv("DO_SPACES_NAME"),
+			Endpoint:    os.Getenv("DO_SPACES_ENDPOINT"),
+		},
 	}
 }

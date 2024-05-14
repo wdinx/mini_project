@@ -3,17 +3,19 @@ package service
 import (
 	"github.com/go-playground/validator/v10"
 	"mini_project/model/web"
-	_interface2 "mini_project/repository"
+	"mini_project/repository"
+	"mini_project/util"
 	"mini_project/util/converter"
 )
 
 type TouristAttractionServiceImpl struct {
-	touristAttractionRepository _interface2.TouristAttractionRepository
+	touristAttractionRepository repository.TouristAttractionRepository
+	imageService                ImageService
 	validator                   *validator.Validate
 }
 
-func NewTouristAttractionService(touristAttractionRepository _interface2.TouristAttractionRepository, validator *validator.Validate) TouristAttractionService {
-	return &TouristAttractionServiceImpl{touristAttractionRepository: touristAttractionRepository, validator: validator}
+func NewTouristAttractionService(touristAttractionRepository repository.TouristAttractionRepository, imageService ImageService, validator *validator.Validate) TouristAttractionService {
+	return &TouristAttractionServiceImpl{touristAttractionRepository: touristAttractionRepository, imageService: imageService, validator: validator}
 }
 
 func (service *TouristAttractionServiceImpl) Create(request *web.TouristAttractionRequest) (*web.TouristAttractionResponse, error) {
@@ -21,7 +23,14 @@ func (service *TouristAttractionServiceImpl) Create(request *web.TouristAttracti
 		return nil, err
 	}
 
-	touristAttraction := converter.ToTouristAttractionModel(request)
+	filename := util.GenerateImageName(request.Name, request.Image.Filename)
+
+	err := service.imageService.UploadImage(request.Image, filename)
+	if err != nil {
+		return nil, err
+	}
+
+	touristAttraction := converter.ToTouristAttractionModel(request, filename)
 
 	result, err := service.touristAttractionRepository.Create(touristAttraction)
 	if err != nil {
@@ -34,7 +43,15 @@ func (service *TouristAttractionServiceImpl) Create(request *web.TouristAttracti
 }
 
 func (service *TouristAttractionServiceImpl) Update(request *web.TouristAttractionUpdateRequest) (*web.TouristAttractionResponse, error) {
-	touristAttraction := converter.ToUpdateTouristAttractionModel(request)
+
+	filename := util.GenerateImageName(request.Name, request.Image.Filename)
+
+	err := service.imageService.UploadImage(request.Image, filename)
+	if err != nil {
+		return nil, err
+	}
+
+	touristAttraction := converter.ToUpdateTouristAttractionModel(request, filename)
 
 	result, err := service.touristAttractionRepository.Update(touristAttraction)
 	if err != nil {

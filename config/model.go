@@ -1,8 +1,9 @@
 package config
 
 type Config struct {
-	Database Database
-	Midtrans Midtrans
+	Database           Database
+	Midtrans           Midtrans
+	DigitalOceanSpaces DigitalOceanSpaces
 }
 
 type Database struct {
@@ -16,4 +17,12 @@ type Database struct {
 type Midtrans struct {
 	Key    string
 	IsProd bool
+}
+
+type DigitalOceanSpaces struct {
+	AccessToken string
+	SecretKey   string
+	Region      string
+	Name        string
+	Endpoint    string
 }

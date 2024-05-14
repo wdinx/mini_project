@@ -1,39 +1,33 @@
 package util
 
 import (
-	"io"
-	"mime/multipart"
-	"os"
+	"mini_project/constant"
+	"path/filepath"
 	"strings"
 	"time"
 )
 
-func StoreImageToLocal(image *multipart.FileHeader, owner string) string {
-	file, err := image.Open()
-	PanicIfError(err)
-
-	tempFile, err := os.CreateTemp("public", "image-"+GenerateImageName(owner)+"*.png")
-	PanicIfError(err)
-	defer tempFile.Close()
-
-	fileBytes, err := io.ReadAll(file)
-	PanicIfError(err)
-
-	_, err = tempFile.Write(fileBytes)
-	PanicIfError(err)
-
-	fileName := tempFile.Name()
-	newFileName := strings.Split(fileName, "\\")
-
-	return newFileName[1]
-}
-
-func GenerateImageName(nameUser string) string {
+func GenerateImageName(nameUser string, filename string) string {
+	ext := filepath.Ext(filename)
 	currentTime := time.Now().UTC().Format("20060102150405.000000000")
 	newCurrentTime := strings.ReplaceAll(currentTime, ".", "")
-	return strings.ToLower(nameUser + "_" + newCurrentTime)
+	return strings.ToLower(nameUser + "_" + newCurrentTime + ext)
 }
 
 func GetImageUrl(fileName string) string {
-	return "http://localhost:3000/image/" + fileName
+	return "https://alterra.sgp1.cdn.digitaloceanspaces.com/mini-project/" + fileName
+}
+
+func GetContentType(filename string) (string, error) {
+	ext := strings.ToLower(filepath.Ext(filename))
+	switch ext {
+	case ".jpeg":
+		return "image/jpeg", nil
+	case ".png":
+		return "image/png", nil
+	case ".jpg":
+		return "image/jpg", nil
+	default:
+		return "", constant.ErrUnsupportedFileFormat
+	}
 }

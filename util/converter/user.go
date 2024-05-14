@@ -6,20 +6,18 @@ import (
 	"mini_project/util"
 )
 
-func ToUserModel(request *web.UserRegisterRequest) *domain.User {
+func ToUserModel(request *web.UserRegisterRequest, filename string) *domain.User {
 
 	var err error
 	request.Password, err = util.HashPassword(request.Password)
 	util.PanicIfError(err)
-
-	newFileName := util.StoreImageToLocal(request.ProfilePicture, request.Name)
 
 	return &domain.User{
 		Name:           request.Name,
 		Email:          request.Email,
 		NoPhone:        request.NoPhone,
 		Password:       request.Password,
-		ProfilePicture: newFileName,
+		ProfilePicture: filename,
 	}
 }
 
@@ -38,6 +36,6 @@ func ToUserResponse(user *domain.User) *web.UserResponse {
 		Name:           user.Name,
 		Email:          user.Email,
 		NoPhone:        user.NoPhone,
-		ProfilePicture: user.ProfilePicture,
+		ProfilePicture: util.GetImageUrl(user.ProfilePicture),
 	}
 }

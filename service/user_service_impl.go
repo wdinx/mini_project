@@ -3,20 +3,20 @@ package service
 import (
 	"github.com/go-playground/validator/v10"
 	"mini_project/middleware"
-	"mini_project/model/domain"
 	"mini_project/model/web"
-	_interface2 "mini_project/repository"
+	"mini_project/repository"
 	"mini_project/util"
 	"mini_project/util/converter"
 )
 
 type UserServiceImpl struct {
-	userRepository _interface2.UserRepository
+	userRepository repository.UserRepository
+	imageService   ImageService
 	validator      *validator.Validate
 }
 
-func NewUserService(userRepository _interface2.UserRepository, validator *validator.Validate) UserService {
-	return &UserServiceImpl{userRepository: userRepository, validator: validator}
+func NewUserService(userRepository repository.UserRepository, imageService ImageService, validator *validator.Validate) UserService {
+	return &UserServiceImpl{userRepository: userRepository, imageService: imageService, validator: validator}
 }
 
 func (service *UserServiceImpl) Login(request *web.UserLoginRequest) (*web.UserLoginResponse, error) {
@@ -41,14 +41,21 @@ func (service *UserServiceImpl) Login(request *web.UserLoginRequest) (*web.UserL
 	return response, nil
 }
 
-func (service *UserServiceImpl) Register(request *web.UserRegisterRequest) (*domain.User, error) {
+func (service *UserServiceImpl) Register(request *web.UserRegisterRequest) (*web.UserResponse, error) {
 	var err error
 	err = service.validator.Struct(request)
 	if err != nil {
 		return nil, err
 	}
 
-	user := converter.ToUserModel(request)
+	filename := util.GenerateImageName(request.Name, request.ProfilePicture.Filename)
+
+	err = service.imageService.UploadImage(request.ProfilePicture, util.GenerateImageName(request.Name, filename))
+	if err != nil {
+		return nil, err
+	}
+
+	user := converter.ToUserModel(request, filename)
 
 	err = service.userRepository.Register(user)
 
@@ -56,5 +63,7 @@ func (service *UserServiceImpl) Register(request *web.UserRegisterRequest) (*dom
 		return nil, err
 	}
 
-	return user, nil
+	response := converter.ToUserResponse(user)
+
+	return response, nil
 }

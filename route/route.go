@@ -1,17 +1,22 @@
 package route
 
 import (
+	"github.com/go-playground/validator/v10"
+	echojwt "github.com/labstack/echo-jwt/v4"
+	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
+	"mime/multipart"
 	"mini_project/config"
 	"mini_project/constant"
 	"mini_project/controller"
 	"mini_project/repository"
 	"mini_project/service"
-
-	"github.com/go-playground/validator/v10"
-	echojwt "github.com/labstack/echo-jwt/v4"
-	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
 )
+
+type Image struct {
+	Image *multipart.FileHeader `json:"image" form:"image"`
+	Text  string                `json:"text" form:"text"`
+}
 
 func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *config.Config) {
 
@@ -22,11 +27,13 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	paymentRepository := repository.NewPaymentRepository(db)
 	transactionRepository := repository.NewTransactionRepository(db)
 	ticketRepository := repository.NewTicketRepository(db)
+	imageRepository := repository.NewImageRepository(config.DigitalOceanSpaces)
 
 	adminService := service.NewAdminService(adminRepository, validate)
-	userService := service.NewUserService(userRepository, validate)
+	ImageService := service.NewImageService(imageRepository)
+	userService := service.NewUserService(userRepository, ImageService, validate)
 	touristAttractionTypeService := service.NewTouristAttractionTypeService(touristAttractionTypeRepository, validate)
-	touristAttractionService := service.NewTouristAttractionService(touristAttractionRepository, validate)
+	touristAttractionService := service.NewTouristAttractionService(touristAttractionRepository, ImageService, validate)
 	midtransService := service.NewMidtransService(config)
 	paymentService := service.NewPaymentService(paymentRepository, midtransService, touristAttractionService, ticketRepository, transactionRepository)
 	transactionService := service.NewTransactionService(transactionRepository, touristAttractionRepository, paymentService, validate)
