@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
+	"mini_project/constant"
 	"mini_project/model/domain"
 )
 
@@ -17,28 +18,28 @@ func NewTicketRepository(db *gorm.DB) TicketRepository {
 
 func (repository *TicketRepositoryImpl) FindByID(id string) (ticket *domain.Ticket, err error) {
 	if err = repository.DB.Preload("User").Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Where("id LIKE ?", id).First(&ticket).Error; err != nil {
-		return nil, err
+		return ticket, constant.ErrDataNotFound
 	}
 	return ticket, nil
 }
 
 func (repository *TicketRepositoryImpl) FindByUserID(userID int) (tickets *[]domain.Ticket, err error) {
 	if err = repository.DB.Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Preload("User").Where("user_id = ?", userID).Find(&tickets).Error; err != nil {
-		return nil, err
+		return tickets, constant.ErrDataNotFound
 	}
 	return tickets, nil
 }
 
 func (repository *TicketRepositoryImpl) FindByTouristAttractionID(touristAttractionID int) (tickets *[]domain.Ticket, err error) {
 	if err = repository.DB.Preload("User").Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Where("tourist_attraction_id = ?", touristAttractionID).Find(&tickets).Error; err != nil {
-		return nil, err
+		return tickets, constant.ErrDataNotFound
 	}
 	return tickets, nil
 }
 
 func (repository *TicketRepositoryImpl) Insert(ticket *domain.Ticket) error {
 	if err := repository.DB.Create(&ticket).Error; err != nil {
-		return err
+		return constant.ErrInsertData
 	}
 	return nil
 }

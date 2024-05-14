@@ -6,6 +6,7 @@ import (
 	"github.com/midtrans/midtrans-go/coreapi"
 	"github.com/midtrans/midtrans-go/snap"
 	"mini_project/config"
+	"mini_project/constant"
 	"mini_project/model/domain"
 )
 
@@ -38,7 +39,7 @@ func (service *MidtransServiceImpl) GenerateSnapURL(payment *domain.Payment) err
 	// 3. Request create Snap transaction to Midtrans
 	snapResp, err := client.CreateTransaction(req)
 	if err != nil {
-		return err
+		return constant.ErrFailedToCreateSnapURL
 	}
 	payment.SnapURL = snapResp.RedirectURL
 	return nil

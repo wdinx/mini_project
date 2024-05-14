@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	"mini_project/exception"
 	"mini_project/model/web"
 	"mini_project/service"
 	"net/http"
@@ -24,7 +25,7 @@ func (controller *UserControllerImpl) Login(c echo.Context) error {
 
 	result, err := controller.userService.Login(&userLoginRequest)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("login success", result))
@@ -45,8 +46,8 @@ func (controller *UserControllerImpl) Register(c echo.Context) error {
 
 	result, err := controller.userService.Register(&userRegisterRequest)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
-	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("admin created successfully", result))
+	return c.JSON(http.StatusCreated, web.NewBaseSuccessResponse("admin created successfully", result))
 }

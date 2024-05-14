@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
+	"mini_project/constant"
 	"mini_project/model/domain"
 )
 
@@ -15,7 +16,7 @@ func NewTouristAttractionTypeRepository(DB *gorm.DB) TouristAttractionTypeReposi
 
 func (repository *TouristAttractionTypeRepositoryImpl) Create(touristAttractionType *domain.TouristAttractionType) (*domain.TouristAttractionType, error) {
 	if err := repository.DB.Create(&touristAttractionType).Error; err != nil {
-		return &domain.TouristAttractionType{}, err
+		return &domain.TouristAttractionType{}, constant.ErrInsertData
 	}
 	return touristAttractionType, nil
 }

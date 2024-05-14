@@ -3,6 +3,8 @@ package controller
 import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
+	"mini_project/constant"
+	"mini_project/exception"
 	"mini_project/model/web"
 	"mini_project/service"
 	"mini_project/util"
@@ -21,18 +23,18 @@ func NewTransactionController(transactionService service.TransactionService) Tra
 	}
 }
 
-func (controller *TransactionControllerImpl) InitializeTransaction(ctx echo.Context) error {
+func (controller *TransactionControllerImpl) InitializeTransaction(c echo.Context) error {
 	request := new(web.TransactionCreateRequest)
-	if err := ctx.Bind(&request); err != nil {
-		return ctx.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
 
 	response, err := controller.TransactionService.Create(request)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
-	return ctx.JSON(http.StatusOK, web.NewBaseSuccessResponse("transaction created successfully", response))
+	return c.JSON(http.StatusCreated, web.NewBaseSuccessResponse("transaction created successfully", response))
 }
 
 func (controller *TransactionControllerImpl) GetByUserID(c echo.Context) error {
@@ -42,7 +44,7 @@ func (controller *TransactionControllerImpl) GetByUserID(c echo.Context) error {
 	token, err := util.ParsingToken(tokenString)
 
 	if err != nil {
-		return c.JSON(http.StatusUnauthorized, "invalid token")
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -51,12 +53,12 @@ func (controller *TransactionControllerImpl) GetByUserID(c echo.Context) error {
 		transactions, err := controller.TransactionService.GetByUserID(userID)
 
 		if err != nil {
-			return c.JSON(http.StatusOK, err.Error())
+			return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 		}
 
-		return c.JSON(200, web.NewBaseSuccessResponse("success get transactions", transactions))
+		return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get transactions", transactions))
 	}
-	return c.JSON(http.StatusUnauthorized, "invalid token")
+	return c.JSON(exception.ErrorHandler(constant.ErrInvalidToken), web.NewBaseErrorResponse(constant.ErrInvalidToken.Error()))
 }
 
 func (controller *TransactionControllerImpl) GetByID(c echo.Context) error {
@@ -67,8 +69,8 @@ func (controller *TransactionControllerImpl) GetByID(c echo.Context) error {
 
 	transaction, err := controller.TransactionService.GetByID(transactionID)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
-	return c.JSON(200, web.NewBaseSuccessResponse("success get transaction", transaction))
+	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get transaction", transaction))
 }

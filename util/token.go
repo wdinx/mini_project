@@ -15,7 +15,7 @@ func ParsingToken(token string) (*jwt.Token, error) {
 		return []byte(constant.USER_SECRET_JWT), nil
 	})
 	if err != nil {
-		return nil, err
+		return nil, constant.ErrInvalidToken
 	}
 
 	return result, nil

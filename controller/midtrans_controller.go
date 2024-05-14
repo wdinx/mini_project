@@ -3,5 +3,5 @@ package controller
 import "github.com/labstack/echo/v4"
 
 type MidtransController interface {
-	PaymentHandler(e echo.Context) error
+	PaymentHandler(c echo.Context) error
 }

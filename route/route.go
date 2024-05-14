@@ -35,14 +35,12 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 
 	adminController := controller.NewAdminController(adminService)
 	userController := controller.NewUserController(userService)
-	fileController := controller.NewFileController()
 	touristAttractionTypeController := controller.NewTouristAttractionTypeController(touristAttractionTypeService)
 	touristAttractionController := controller.NewTouristAttractionController(touristAttractionService)
 	midtransController := controller.NewMidtransController(midtransService, paymentService)
 	transactionController := controller.NewTransactionController(transactionService)
 	ticketController := controller.NewTicketController(ticketService)
 
-	e.GET("/image/:image", fileController.ShowFile)
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(200, map[string]interface{}{
 			"status":  200,
@@ -74,7 +72,6 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	// Route for Tourist Attraction
 	eAdmin.POST("/tourist-attractions", touristAttractionController.Create)
 	eAdmin.PUT("/tourist-attractions/:id", touristAttractionController.Update)
-	eAdmin.PUT("/tourist-attractions/:id/balance", touristAttractionController.UpdateBalanceById)
 
 	// Route for Ticket
 	eAdmin.GET("/tourist-attraction/:id/tickets", ticketController.FindByTouristAttractionID)

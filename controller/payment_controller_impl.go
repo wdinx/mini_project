@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	"mini_project/exception"
 	"mini_project/model/web"
 	"mini_project/service"
 	"net/http"
@@ -15,15 +16,15 @@ func NewPaymentController(paymentService service.PaymentService) PaymentControll
 	return &PaymentControllerImpl{paymentService}
 }
 
-func (controller *PaymentControllerImpl) InitializePayment(e echo.Context) error {
+func (controller *PaymentControllerImpl) InitializePayment(c echo.Context) error {
 	var payment web.PaymentRequest
-	err := e.Bind(&payment)
+	err := c.Bind(&payment)
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
 	response, err := controller.paymentService.InitializePayment(&payment)
 	if err != nil {
-		return e.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
-	return e.JSON(http.StatusOK, web.NewBaseSuccessResponse("payment initialized successfully", response))
+	return c.JSON(http.StatusCreated, web.NewBaseSuccessResponse("payment initialized successfully", response))
 }

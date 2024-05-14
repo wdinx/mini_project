@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
+	"mini_project/constant"
 	"mini_project/model/domain"
 )
 
@@ -15,21 +16,21 @@ func NewPaymentRepository(db *gorm.DB) PaymentRepository {
 
 func (repository *PaymentRepositoryImpl) FindByID(id string) (payment *domain.Payment, err error) {
 	if err = repository.db.Preload("Transaction").First(&payment, "id LIKE ?", id).Error; err != nil {
-		return nil, err
+		return payment, constant.ErrDataNotFound
 	}
 	return payment, nil
 }
 
 func (repository *PaymentRepositoryImpl) Insert(payment *domain.Payment) error {
 	if err := repository.db.Create(&payment).Error; err != nil {
-		return err
+		return constant.ErrInsertData
 	}
 	return nil
 }
 
 func (repository *PaymentRepositoryImpl) Update(payment *domain.Payment) error {
 	if err := repository.db.Save(&payment).Error; err != nil {
-		return err
+		return constant.ErrUpdateData
 	}
 	return nil
 }

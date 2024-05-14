@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
+	"mini_project/constant"
 	"mini_project/model/domain"
 )
 
@@ -16,7 +17,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 func (repository *UserRepositoryImpl) Login(email string) (*domain.User, error) {
 	var user domain.User
 	if err := repository.DB.First(&user, "email LIKE ?", email).Error; err != nil {
-		return &domain.User{}, err
+		return &domain.User{}, constant.ErrLogin
 	}
 
 	return &user, nil
@@ -24,7 +25,7 @@ func (repository *UserRepositoryImpl) Login(email string) (*domain.User, error) 
 
 func (repository *UserRepositoryImpl) Register(user *domain.User) error {
 	if err := repository.DB.Create(&user).Error; err != nil {
-		return err
+		return constant.ErrRegister
 	}
 	return nil
 }

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
+	"mini_project/constant"
 	"mini_project/model/domain"
 )
 
@@ -15,28 +16,28 @@ func NewTransactionRepository(DB *gorm.DB) TransactionRepository {
 
 func (repository *TransactionRepositoryImpl) Create(transaction *domain.Transaction) (*domain.Transaction, error) {
 	if err := repository.DB.Create(&transaction).Error; err != nil {
-		return nil, err
+		return &domain.Transaction{}, constant.ErrInsertData
 	}
 	return transaction, nil
 }
 
 func (repository *TransactionRepositoryImpl) Delete(transactionID int) error {
 	if err := repository.DB.Unscoped().Delete(&domain.Transaction{}, "id LIKE ?", transactionID).Error; err != nil {
-		return err
+		return constant.ErrDeleteData
 	}
 	return nil
 }
 
 func (repository *TransactionRepositoryImpl) GetByUserID(userID int) (transactions *[]domain.Transaction, err error) {
 	if err = repository.DB.Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Preload("User").Find(&transactions, "user_id = ?", userID).Error; err != nil {
-		return nil, err
+		return transactions, constant.ErrDataNotFound
 	}
 	return transactions, nil
 }
 
 func (repository *TransactionRepositoryImpl) GetByID(transactionID int) (transaction *domain.Transaction, err error) {
 	if err = repository.DB.Preload("TouristAttraction").Preload("TouristAttractionType").Preload("User").Find(&transaction, "id = ?", transactionID).Error; err != nil {
-		return nil, err
+		return transaction, constant.ErrDataNotFound
 	}
 	return transaction, nil
 }

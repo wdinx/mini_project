@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	"mini_project/exception"
 	"mini_project/model/web"
 	"mini_project/service"
 	"net/http"
@@ -25,9 +26,9 @@ func (controller *TouristAttractionTypeControllerImpl) Create(c echo.Context) er
 	}
 	result, err := controller.touristAttractionTypeService.Create(&touristAttractionTypeCreateRequest)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
-	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction type created successfully", result))
+	return c.JSON(http.StatusCreated, web.NewBaseSuccessResponse("tourist attraction type created successfully", result))
 }
 
 func (controller *TouristAttractionTypeControllerImpl) Update(c echo.Context) error {
@@ -39,7 +40,7 @@ func (controller *TouristAttractionTypeControllerImpl) Update(c echo.Context) er
 	}
 	result, err := controller.touristAttractionTypeService.Update(&touristAttractionTypeUpdateRequest)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction type updated successfully", result))
 }
@@ -53,7 +54,7 @@ func (controller *TouristAttractionTypeControllerImpl) Delete(c echo.Context) er
 	}
 	err = controller.touristAttractionTypeService.Delete(idx)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction type deleted successfully", nil))
 }

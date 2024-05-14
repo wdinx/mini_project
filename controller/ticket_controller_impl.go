@@ -3,6 +3,8 @@ package controller
 import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
+	"mini_project/constant"
+	"mini_project/exception"
 	"mini_project/model/web"
 	"mini_project/service"
 	"mini_project/util"
@@ -28,7 +30,7 @@ func (controller *TicketControllerImpl) FindByUserID(c echo.Context) error {
 	token, err := util.ParsingToken(tokenString)
 
 	if err != nil {
-		return c.JSON(http.StatusUnauthorized, "invalid token")
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
@@ -37,13 +39,13 @@ func (controller *TicketControllerImpl) FindByUserID(c echo.Context) error {
 		tickets, err := controller.ticketService.FindByUserID(userID)
 
 		if err != nil {
-			return c.JSON(http.StatusOK, err.Error())
+			return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 		}
 
-		return c.JSON(200, web.NewBaseSuccessResponse("success get tickets", tickets))
+		return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get tickets", tickets))
 	}
 
-	return c.JSON(http.StatusUnauthorized, "invalid token")
+	return c.JSON(exception.ErrorHandler(constant.ErrUnauthorized), web.NewBaseErrorResponse(constant.ErrUnauthorized.Error()))
 }
 
 func (controller *TicketControllerImpl) FindByTouristAttractionID(c echo.Context) error {
@@ -55,10 +57,10 @@ func (controller *TicketControllerImpl) FindByTouristAttractionID(c echo.Context
 
 	tickets, err := controller.ticketService.FindByTouristAttractionID(touristAttractionID)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
-	return c.JSON(200, web.NewBaseSuccessResponse("success get tickets", tickets))
+	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get tickets", tickets))
 
 }
 
@@ -70,5 +72,5 @@ func (controller *TicketControllerImpl) FindByID(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, web.NewBaseErrorResponse(err.Error()))
 	}
 
-	return c.JSON(200, web.NewBaseSuccessResponse("success get ticket", ticket))
+	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get ticket", ticket))
 }

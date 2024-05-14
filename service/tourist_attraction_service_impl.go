@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/go-playground/validator/v10"
+	"mini_project/constant"
 	"mini_project/model/web"
 	"mini_project/repository"
 	"mini_project/util"
@@ -20,21 +21,21 @@ func NewTouristAttractionService(touristAttractionRepository repository.TouristA
 
 func (service *TouristAttractionServiceImpl) Create(request *web.TouristAttractionRequest) (*web.TouristAttractionResponse, error) {
 	if err := service.validator.Struct(request); err != nil {
-		return nil, err
+		return &web.TouristAttractionResponse{}, constant.ErrEmptyInput
 	}
 
 	filename := util.GenerateImageName(request.Name, request.Image.Filename)
 
 	err := service.imageService.UploadImage(request.Image, filename)
 	if err != nil {
-		return nil, err
+		return &web.TouristAttractionResponse{}, err
 	}
 
 	touristAttraction := converter.ToTouristAttractionModel(request, filename)
 
 	result, err := service.touristAttractionRepository.Create(touristAttraction)
 	if err != nil {
-		return nil, err
+		return &web.TouristAttractionResponse{}, err
 	}
 
 	touristAttractionResponse := converter.ToTouristAttractionResponse(result)
@@ -48,14 +49,14 @@ func (service *TouristAttractionServiceImpl) Update(request *web.TouristAttracti
 
 	err := service.imageService.UploadImage(request.Image, filename)
 	if err != nil {
-		return nil, err
+		return &web.TouristAttractionResponse{}, err
 	}
 
 	touristAttraction := converter.ToUpdateTouristAttractionModel(request, filename)
 
 	result, err := service.touristAttractionRepository.Update(touristAttraction)
 	if err != nil {
-		return nil, err
+		return &web.TouristAttractionResponse{}, err
 	}
 
 	touristAttractionResponse := converter.ToTouristAttractionResponse(result)
@@ -83,7 +84,7 @@ func (service *TouristAttractionServiceImpl) GetAllTouristAttraction() (*[]web.T
 
 	result, err := service.touristAttractionRepository.GetAllTouristAttraction()
 	if err != nil {
-		return nil, err
+		return &[]web.TouristAttractionResponse{}, err
 	}
 
 	var touristAttractionResponses []web.TouristAttractionResponse
@@ -96,7 +97,7 @@ func (service *TouristAttractionServiceImpl) GetAllTouristAttraction() (*[]web.T
 func (service *TouristAttractionServiceImpl) GetTouristAttractionById(id int) (*web.TouristAttractionResponse, error) {
 	result, err := service.touristAttractionRepository.FindByID(id)
 	if err != nil {
-		return nil, err
+		return &web.TouristAttractionResponse{}, err
 	}
 
 	touristAttractionResponse := converter.ToTouristAttractionResponse(result)

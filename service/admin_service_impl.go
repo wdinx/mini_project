@@ -25,7 +25,7 @@ func NewAdminService(adminRepository repository.AdminRepository, validator *vali
 func (service *AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web.AdminRegisterResponse, error) {
 	err := service.validator.Struct(admin)
 	if err != nil {
-		return &web.AdminRegisterResponse{}, err
+		return &web.AdminRegisterResponse{}, constant.ErrEmptyInput
 	}
 
 	admin.Password, err = util.HashPassword(admin.Password)
@@ -35,7 +35,7 @@ func (service *AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web
 
 	adminResponse, err := service.adminRepository.Register(insertAdmin)
 	if err != nil {
-		return &web.AdminRegisterResponse{}, constant.ErrInsertDatabase
+		return &web.AdminRegisterResponse{}, err
 	}
 
 	result := converter.ToAdminRegisterResponse(adminResponse)
@@ -45,20 +45,23 @@ func (service *AdminServiceImpl) Register(admin *web.AdminRegisterRequest) (*web
 
 func (service *AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminLoginResponse, error) {
 	if err := service.validator.Struct(admin); err != nil {
-		return &web.AdminLoginResponse{}, err
+		return &web.AdminLoginResponse{}, constant.ErrEmptyInput
 	}
 
 	result, err := service.adminRepository.Login(admin.Username)
 	if err != nil {
-		return &web.AdminLoginResponse{}, constant.ErrLoginFailed
+		return &web.AdminLoginResponse{}, err
 	}
 
 	err = util.CheckPassword(admin.Password, result.Password)
 	if err != nil {
-		return &web.AdminLoginResponse{}, constant.ErrLoginFailed
+		return &web.AdminLoginResponse{}, constant.ErrLogin
 	}
 
 	token, err := middleware.CreateTokeForAdmin(int(result.ID), result.Username)
+	if err != nil {
+		return &web.AdminLoginResponse{}, constant.ErrInternalServer
+	}
 
 	response := converter.ToAdminLoginResponse(result, token)
 

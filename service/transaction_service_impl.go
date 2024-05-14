@@ -1,9 +1,9 @@
 package service
 
 import (
-	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
+	"mini_project/constant"
 	"mini_project/model/web"
 	"mini_project/repository"
 	"mini_project/util"
@@ -32,24 +32,24 @@ func NewTransactionService(
 
 func (service *TransactionServiceImpl) Create(request *web.TransactionCreateRequest) (*web.PaymentResponse, error) {
 	if err := service.validator.Struct(request); err != nil {
-		return nil, err
+		return &web.PaymentResponse{}, constant.ErrEmptyInput
 	}
 
 	touristAttraction, err := service.touristAttractionRepository.FindByID(request.TouristAttractionID)
 	if err != nil {
-		return nil, err
+		return &web.PaymentResponse{}, err
 	}
 
 	reservationDate, err := util.StringToDate(request.ReservationDate)
 	if err != nil {
-		return nil, err
+		return &web.PaymentResponse{}, err
 	}
 
 	transaction := converter.ToTransactionModel(request, touristAttraction, reservationDate)
 
 	response, err := service.transactionRepository.Create(transaction)
 	if err != nil {
-		return nil, err
+		return &web.PaymentResponse{}, err
 	}
 
 	payment := web.PaymentRequest{
@@ -59,7 +59,7 @@ func (service *TransactionServiceImpl) Create(request *web.TransactionCreateRequ
 
 	result, err := service.paymentService.InitializePayment(&payment)
 	if err != nil {
-		return nil, err
+		return &web.PaymentResponse{}, err
 	}
 	return result, nil
 }
@@ -74,11 +74,11 @@ func (service *TransactionServiceImpl) Delete(transactionID int) error {
 func (service *TransactionServiceImpl) GetByUserID(userID int) (*[]web.TransactionResponse, error) {
 	transactions, err := service.transactionRepository.GetByUserID(userID)
 	if err != nil {
-		return nil, err
+		return &[]web.TransactionResponse{}, err
 	}
 
 	if len(*transactions) == 0 {
-		return nil, errors.New("transaction not found")
+		return &[]web.TransactionResponse{}, constant.ErrDataNotFound
 	}
 
 	var responses []web.TransactionResponse
@@ -93,7 +93,7 @@ func (service *TransactionServiceImpl) GetByUserID(userID int) (*[]web.Transacti
 func (service *TransactionServiceImpl) GetByID(transactionID int) (*web.TransactionResponse, error) {
 	transaction, err := service.transactionRepository.GetByID(transactionID)
 	if err != nil {
-		return nil, err
+		return &web.TransactionResponse{}, err
 	}
 
 	response := converter.ToTransactionResponse(transaction)

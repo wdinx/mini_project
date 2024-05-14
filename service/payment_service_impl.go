@@ -1,9 +1,8 @@
 package service
 
 import (
-	"errors"
-	"fmt"
 	"github.com/google/uuid"
+	"mini_project/constant"
 	"mini_project/model/domain"
 	"mini_project/model/web"
 	"mini_project/repository"
@@ -25,10 +24,6 @@ func NewPaymentService(
 	ticketRepository repository.TicketRepository,
 	transactionRepository repository.TransactionRepository) PaymentService {
 
-	if paymentRepository == nil || midtransService == nil || touristAttractionService == nil || ticketRepository == nil || transactionRepository == nil {
-		fmt.Println("PaymentService initialization failed")
-	}
-
 	return &PaymentServiceImpl{
 		paymentRepository:        paymentRepository,
 		midtransService:          midtransService,
@@ -43,7 +38,7 @@ func (service *PaymentServiceImpl) InitializePayment(request *web.PaymentRequest
 
 	err := service.midtransService.GenerateSnapURL(payment)
 	if err != nil {
-		return nil, err
+		return &web.PaymentResponse{}, err
 	}
 
 	if err = service.paymentRepository.Insert(payment); err != nil {
@@ -60,11 +55,11 @@ func (service *PaymentServiceImpl) ConfirmedPayment(id string) error {
 	}
 	// Check if payment is found
 	if *payment == (domain.Payment{}) {
-		return errors.New("payment not found")
+		return constant.ErrPaymentNotFound
 	}
 	// Check if payment is already confirmed
 	if payment.Status == 1 {
-		return errors.New("payment already confirmed")
+		return constant.ErrPaymentAlreadyConfirmed
 	}
 
 	// Action to update balance

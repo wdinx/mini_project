@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/go-playground/validator/v10"
+	"mini_project/constant"
 	"mini_project/model/web"
 	"mini_project/repository"
 	"mini_project/util/converter"
@@ -19,14 +20,14 @@ func NewTouristAttractionTypeService(touristAttractionTypeRepository repository.
 func (service *TouristAttractionTypeServiceImpl) Create(request *web.TouristAttractionTypeCreateRequest) (*web.TouristAttractionTypeResponse, error) {
 	var err error
 	if err = service.validator.Struct(request); err != nil {
-		return nil, err
+		return &web.TouristAttractionTypeResponse{}, constant.ErrEmptyInput
 	}
 
 	touristAttractionType := converter.ToCreateTouristAttractionType(request)
 
 	result, err := service.touristAttractionTypeRepository.Create(touristAttractionType)
 	if err != nil {
-		return nil, err
+		return &web.TouristAttractionTypeResponse{}, err
 	}
 
 	response := converter.ToTouristAttractionTypeResponse(result)
@@ -38,19 +39,19 @@ func (service *TouristAttractionTypeServiceImpl) Create(request *web.TouristAttr
 func (service *TouristAttractionTypeServiceImpl) Update(request *web.TouristAttractionTypeUpdateRequest) (*web.TouristAttractionTypeResponse, error) {
 	var err error
 	if err = service.validator.Struct(request); err != nil {
-		return nil, err
+		return &web.TouristAttractionTypeResponse{}, constant.ErrEmptyInput
 	}
 
 	data, err := service.touristAttractionTypeRepository.FindByID(int(request.ID))
 	if err != nil {
-		return nil, err
+		return &web.TouristAttractionTypeResponse{}, err
 	}
 
 	data.Name = request.Name
 
 	result, err := service.touristAttractionTypeRepository.Update(data)
 	if err != nil {
-		return nil, err
+		return &web.TouristAttractionTypeResponse{}, err
 	}
 
 	response := converter.ToTouristAttractionTypeResponse(result)

@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/go-playground/validator/v10"
+	"mini_project/constant"
 	"mini_project/middleware"
 	"mini_project/model/web"
 	"mini_project/repository"
@@ -30,7 +31,7 @@ func (service *UserServiceImpl) Login(request *web.UserLoginRequest) (*web.UserL
 
 	err = util.CheckPassword(request.Password, user.Password)
 	if err != nil {
-		return nil, err
+		return nil, constant.ErrLogin
 	}
 
 	token, err := middleware.CreateTokenForUser(int(user.ID), user.Name)
@@ -45,14 +46,14 @@ func (service *UserServiceImpl) Register(request *web.UserRegisterRequest) (*web
 	var err error
 	err = service.validator.Struct(request)
 	if err != nil {
-		return nil, err
+		return &web.UserResponse{}, constant.ErrEmptyInput
 	}
 
 	filename := util.GenerateImageName(request.Name, request.ProfilePicture.Filename)
 
 	err = service.imageService.UploadImage(request.ProfilePicture, util.GenerateImageName(request.Name, filename))
 	if err != nil {
-		return nil, err
+		return &web.UserResponse{}, err
 	}
 
 	user := converter.ToUserModel(request, filename)
@@ -60,7 +61,7 @@ func (service *UserServiceImpl) Register(request *web.UserRegisterRequest) (*web
 	err = service.userRepository.Register(user)
 
 	if err != nil {
-		return nil, err
+		return &web.UserResponse{}, err
 	}
 
 	response := converter.ToUserResponse(user)

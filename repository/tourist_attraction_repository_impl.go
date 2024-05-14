@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
+	"mini_project/constant"
 	"mini_project/model/domain"
 )
 
@@ -15,14 +16,14 @@ func NewTouristAttractionRepository(db *gorm.DB) TouristAttractionRepository {
 
 func (repository *TouristAttractionRepositoryImpl) Create(touristAttraction *domain.TouristAttraction) (*domain.TouristAttraction, error) {
 	if err := repository.DB.Create(touristAttraction).Error; err != nil {
-		return nil, err
+		return &domain.TouristAttraction{}, constant.ErrInsertData
 	}
 	return touristAttraction, nil
 }
 
 func (repository *TouristAttractionRepositoryImpl) UpdateBalanceById(touristAttraction *domain.TouristAttraction) (*domain.TouristAttraction, error) {
 	if err := repository.DB.Model(&domain.TouristAttraction{}).Where("id = ?", touristAttraction.ID).Update("balance", touristAttraction.Balance).Error; err != nil {
-		return nil, err
+		return &domain.TouristAttraction{}, constant.ErrUpdateData
 	}
 	return touristAttraction, nil
 }
@@ -30,7 +31,7 @@ func (repository *TouristAttractionRepositoryImpl) UpdateBalanceById(touristAttr
 func (repository *TouristAttractionRepositoryImpl) Delete(touristAttractionId int) error {
 	var touristAttraction *domain.TouristAttraction
 	if err := repository.DB.Take(&touristAttraction, "id = ?", touristAttractionId).Error; err != nil {
-		return err
+		return constant.ErrDataNotFound
 	}
 
 	if err := repository.DB.Delete(touristAttraction).Error; err != nil {
@@ -42,7 +43,7 @@ func (repository *TouristAttractionRepositoryImpl) Delete(touristAttractionId in
 
 func (repository *TouristAttractionRepositoryImpl) Update(touristAttraction *domain.TouristAttraction) (*domain.TouristAttraction, error) {
 	if err := repository.DB.Save(touristAttraction).Where("id = ?", touristAttraction.ID).Error; err != nil {
-		return nil, err
+		return &domain.TouristAttraction{}, constant.ErrUpdateData
 	}
 	return touristAttraction, nil
 }
@@ -50,7 +51,7 @@ func (repository *TouristAttractionRepositoryImpl) Update(touristAttraction *dom
 func (repository *TouristAttractionRepositoryImpl) GetAllTouristAttraction() (*[]domain.TouristAttraction, error) {
 	var touristAttractions *[]domain.TouristAttraction
 	if err := repository.DB.Model(&domain.TouristAttraction{}).Joins("TouristAttractionType").Find(&touristAttractions).Error; err != nil {
-		return nil, err
+		return &[]domain.TouristAttraction{}, constant.ErrDataNotFound
 	}
 	return touristAttractions, nil
 }
@@ -58,7 +59,7 @@ func (repository *TouristAttractionRepositoryImpl) GetAllTouristAttraction() (*[
 func (repository *TouristAttractionRepositoryImpl) FindByID(touristAttractionId int) (*domain.TouristAttraction, error) {
 	var touristAttraction *domain.TouristAttraction
 	if err := repository.DB.First(&touristAttraction, "id LIKE ?", touristAttractionId).Error; err != nil {
-		return nil, err
+		return &domain.TouristAttraction{}, constant.ErrDataNotFound
 	}
 	return touristAttraction, nil
 }

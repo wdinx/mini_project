@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -41,7 +40,6 @@ func (repository *ImageRepositoryImpl) UploadImage(image multipart.File, filenam
 
 	_, err = s3Client.PutObject(&object)
 	if err != nil {
-		fmt.Println(err.Error())
 		return constant.ErrInternalServer
 	}
 	return nil

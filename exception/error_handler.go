@@ -1,23 +1,22 @@
 package exception
 
 import (
-	"github.com/go-playground/validator/v10"
-	"github.com/labstack/echo/v4"
+	"errors"
 	"mini_project/constant"
-	"mini_project/model/web"
 	"net/http"
 )
 
-func ErrorHandler(e echo.Context, err interface{}) {
+func ErrorHandler(err error) int {
 
-}
-
-func validationErrors(e echo.Context, err interface{}) bool {
-	_, ok := err.(validator.ValidationErrors)
-	if ok {
-		e.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(constant.ErrInputData.Error()))
-		return true
+	if errors.Is(err, constant.ErrEmptyInput) || errors.Is(err, constant.ErrUnsupportedFileFormat) || errors.Is(err, constant.ErrInputDate) {
+		return http.StatusBadRequest
+	} else if errors.Is(err, constant.ErrInvalidToken) || errors.Is(err, constant.ErrLogin) || errors.Is(err, constant.ErrRegister) {
+		return http.StatusUnauthorized
+	} else if errors.Is(err, constant.ErrDataNotFound) || errors.Is(err, constant.ErrPaymentNotFound) || errors.Is(err, constant.ErrUnauthorized) {
+		return http.StatusNotFound
+	} else if errors.Is(err, constant.ErrPaymentAlreadyConfirmed) {
+		return http.StatusConflict
 	} else {
-		return false
+		return http.StatusInternalServerError
 	}
 }

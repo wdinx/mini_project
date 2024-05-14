@@ -18,18 +18,19 @@ func NewTicketService(ticketRepository repository.TicketRepository, validator *v
 
 func (service *TicketServiceImpl) FindByID(id string) (*web.TicketResponse, error) {
 	ticket, err := service.ticketRepository.FindByID(id)
+	if err != nil {
+		return &web.TicketResponse{}, err
+	}
 
 	response := converter.ToTicketResponse(ticket)
-	if err != nil {
-		return nil, err
-	}
+
 	return response, nil
 }
 
 func (service *TicketServiceImpl) FindByUserID(userID int) (*[]web.TicketResponse, error) {
 	tickets, err := service.ticketRepository.FindByUserID(userID)
 	if err != nil {
-		return nil, err
+		return &[]web.TicketResponse{}, err
 	}
 
 	var response []web.TicketResponse
@@ -42,7 +43,7 @@ func (service *TicketServiceImpl) FindByUserID(userID int) (*[]web.TicketRespons
 func (service *TicketServiceImpl) FindByTouristAttractionID(touristAttractionID int) (*[]web.TicketResponse, error) {
 	tickets, err := service.ticketRepository.FindByTouristAttractionID(touristAttractionID)
 	if err != nil {
-		return nil, err
+		return &[]web.TicketResponse{}, err
 	}
 	var response []web.TicketResponse
 	for _, ticket := range *tickets {
