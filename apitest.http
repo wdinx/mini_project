@@ -1,0 +1,35 @@
+### Registering Admin
+POST https://wisata.practiceproject.tech/v1/admin/register
+Accept: application/json
+Content-Type: application/json
+
+
+{
+  "name":"wahyudin",
+  "username":"wahyudin12",
+  "password":"wahyudin1",
+  "tourist_attraction_id":1
+}
+
+### Login User
+POST https://wisata.practiceproject.tech/v1/user/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email":"wahyudin@gmail.com",
+  "password":"wahyudin"
+}
+
+### Initialize Payment
+POST https://wisata.practiceproject.tech/v1/user/transaction/initialize
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTU3NTM5NDEsIm5hbWUiOiJXYWh5dWRkaW4iLCJ1c2VySWQiOjF9.4l3y2z67dbxi7_Ivd2_DXcVKMJGxuZ91_X4xDVYvPjw
+
+{
+  "user_id": 1,
+  "tourist_attraction_id": 1,
+  "qty": 2,
+  "reservation_date": "2024-11-11"
+}
