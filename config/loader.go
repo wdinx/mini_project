@@ -27,7 +27,7 @@ func Get() *Config {
 			AccessToken: os.Getenv("DO_SPACES_ACCESS_TOKEN"),
 			SecretKey:   os.Getenv("DO_SPACES_SECRET_KEY"),
 			Region:      os.Getenv("DO_SPACES_REGION"),
-			Name:        os.Getenv("DO_SPACES_NAME"),
+			Name:        os.Getenv("DO_SPACES_BUCKET"),
 			Endpoint:    os.Getenv("DO_SPACES_ENDPOINT"),
 		},
 	}
