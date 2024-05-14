@@ -5,18 +5,12 @@ import (
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
-	"mime/multipart"
 	"mini_project/config"
 	"mini_project/constant"
 	"mini_project/controller"
 	"mini_project/repository"
 	"mini_project/service"
 )
-
-type Image struct {
-	Image *multipart.FileHeader `json:"image" form:"image"`
-	Text  string                `json:"text" form:"text"`
-}
 
 func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *config.Config) {
 
