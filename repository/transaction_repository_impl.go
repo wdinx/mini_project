@@ -29,7 +29,7 @@ func (repository *TransactionRepositoryImpl) Delete(transactionID int) error {
 }
 
 func (repository *TransactionRepositoryImpl) GetByUserID(userID int) (transactions *[]domain.Transaction, err error) {
-	if err = repository.DB.Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Preload("User").Find(&transactions, "user_id = ?", userID).Error; err != nil {
+	if err = repository.DB.Preload("TouristAttraction").Preload("TouristAttraction.TouristAttractionType").Find(&transactions, "user_id = ?", userID).Error; err != nil {
 		return transactions, constant.ErrDataNotFound
 	}
 	return transactions, nil

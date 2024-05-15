@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"github.com/go-playground/validator/v10"
 	"mini_project/constant"
 	"mini_project/model/web"
@@ -13,6 +12,7 @@ import (
 type TransactionServiceImpl struct {
 	transactionRepository       repository.TransactionRepository
 	touristAttractionRepository repository.TouristAttractionRepository
+	userRepository              repository.UserRepository
 	paymentService              PaymentService
 	validator                   *validator.Validate
 }
@@ -20,11 +20,13 @@ type TransactionServiceImpl struct {
 func NewTransactionService(
 	transactionRepository repository.TransactionRepository,
 	touristAttractionRepository repository.TouristAttractionRepository,
+	userRepository repository.UserRepository,
 	paymentService PaymentService,
 	validator *validator.Validate) TransactionService {
 	return &TransactionServiceImpl{
 		transactionRepository:       transactionRepository,
 		touristAttractionRepository: touristAttractionRepository,
+		userRepository:              userRepository,
 		paymentService:              paymentService,
 		validator:                   validator,
 	}
@@ -71,23 +73,23 @@ func (service *TransactionServiceImpl) Delete(transactionID int) error {
 	return nil
 }
 
-func (service *TransactionServiceImpl) GetByUserID(userID int) (*[]web.TransactionResponse, error) {
+func (service *TransactionServiceImpl) GetByUserID(userID int) (*web.UserTransactionResponse, error) {
 	transactions, err := service.transactionRepository.GetByUserID(userID)
 	if err != nil {
-		return &[]web.TransactionResponse{}, err
+		return &web.UserTransactionResponse{}, err
+	}
+
+	user, err := service.userRepository.GetByID(userID)
+	if err != nil {
+		return &web.UserTransactionResponse{}, err
 	}
 
 	if len(*transactions) == 0 {
-		return &[]web.TransactionResponse{}, constant.ErrDataNotFound
+		return &web.UserTransactionResponse{}, constant.ErrDataNotFound
 	}
 
-	var responses []web.TransactionResponse
-	for _, transaction := range *transactions {
-		response := converter.ToTransactionResponse(&transaction)
-		fmt.Println(*response)
-		responses = append(responses, *response)
-	}
-	return &responses, nil
+	responses := converter.ToUserTransactionResponse(user, transactions)
+	return responses, nil
 }
 
 func (service *TransactionServiceImpl) GetByID(transactionID int) (*web.TransactionResponse, error) {

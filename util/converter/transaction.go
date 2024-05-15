@@ -21,14 +21,26 @@ func ToTransactionModel(request *web.TransactionCreateRequest, touristAttraction
 
 func ToTransactionResponse(transaction *domain.Transaction) *web.TransactionResponse {
 	return &web.TransactionResponse{
-		ID:                  transaction.ID,
-		UserID:              transaction.UserID,
-		User:                *ToUserResponse(&transaction.User),
-		TouristAttractionID: transaction.TouristAttractionID,
-		TouristAttraction:   *ToTouristAttractionResponse(&transaction.TouristAttraction),
-		Qty:                 transaction.Qty,
-		Amount:              transaction.Amount,
-		ReservationDate:     transaction.ReservationDate,
-		Status:              transaction.Status,
+		ID:                transaction.ID,
+		TouristAttraction: *ToTouristAttractionResponse(&transaction.TouristAttraction),
+		Qty:               transaction.Qty,
+		Amount:            transaction.Amount,
+		ReservationDate:   transaction.ReservationDate,
+		Status:            transaction.Status,
+	}
+}
+
+func ToUserTransactionResponse(user *domain.User, transactions *[]domain.Transaction) *web.UserTransactionResponse {
+	var response []web.TransactionResponse
+	for _, value := range *transactions {
+		response = append(response, *ToTransactionResponse(&value))
+	}
+	return &web.UserTransactionResponse{
+		ID:                  user.ID,
+		Name:                user.Name,
+		Email:               user.Email,
+		NoPhone:             user.NoPhone,
+		ProfilePicture:      user.ProfilePicture,
+		TransactionResponse: response,
 	}
 }

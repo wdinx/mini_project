@@ -6,6 +6,6 @@ import (
 
 type TicketService interface {
 	FindByID(id string) (*web.TicketResponse, error)
-	FindByUserID(userID int) (*[]web.TicketResponse, error)
+	FindByUserID(userID int) (*web.UserTicketResponse, error)
 	FindByTouristAttractionID(touristAttractionID int) (*[]web.TicketResponse, error)
 }

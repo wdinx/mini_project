@@ -9,11 +9,12 @@ import (
 
 type TicketServiceImpl struct {
 	ticketRepository repository.TicketRepository
+	userRepository   repository.UserRepository
 	validator        *validator.Validate
 }
 
-func NewTicketService(ticketRepository repository.TicketRepository, validator *validator.Validate) TicketService {
-	return &TicketServiceImpl{ticketRepository: ticketRepository, validator: validator}
+func NewTicketService(ticketRepository repository.TicketRepository, userRepository repository.UserRepository, validator *validator.Validate) TicketService {
+	return &TicketServiceImpl{ticketRepository: ticketRepository, userRepository: userRepository, validator: validator}
 }
 
 func (service *TicketServiceImpl) FindByID(id string) (*web.TicketResponse, error) {
@@ -27,17 +28,20 @@ func (service *TicketServiceImpl) FindByID(id string) (*web.TicketResponse, erro
 	return response, nil
 }
 
-func (service *TicketServiceImpl) FindByUserID(userID int) (*[]web.TicketResponse, error) {
+func (service *TicketServiceImpl) FindByUserID(userID int) (*web.UserTicketResponse, error) {
 	tickets, err := service.ticketRepository.FindByUserID(userID)
 	if err != nil {
-		return &[]web.TicketResponse{}, err
+		return &web.UserTicketResponse{}, err
 	}
 
-	var response []web.TicketResponse
-	for _, ticket := range *tickets {
-		response = append(response, *converter.ToTicketResponse(&ticket))
+	user, err := service.userRepository.GetByID(userID)
+	if err != nil {
+		return &web.UserTicketResponse{}, err
 	}
-	return &response, nil
+
+	response := converter.ToUserTicketResponse(user, tickets)
+
+	return response, nil
 }
 
 func (service *TicketServiceImpl) FindByTouristAttractionID(touristAttractionID int) (*[]web.TicketResponse, error) {

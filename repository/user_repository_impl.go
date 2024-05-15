@@ -29,3 +29,11 @@ func (repository *UserRepositoryImpl) Register(user *domain.User) error {
 	}
 	return nil
 }
+
+func (repository *UserRepositoryImpl) GetByID(userID int) (*domain.User, error) {
+	var user domain.User
+	if err := repository.DB.First(&user, "id LIKE ?", userID).Error; err != nil {
+		return &domain.User{}, constant.ErrDataNotFound
+	}
+	return &user, nil
+}

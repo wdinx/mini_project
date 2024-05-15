@@ -30,8 +30,8 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	touristAttractionService := service.NewTouristAttractionService(touristAttractionRepository, ImageService, validate)
 	midtransService := service.NewMidtransService(config)
 	paymentService := service.NewPaymentService(paymentRepository, midtransService, touristAttractionService, ticketRepository, transactionRepository)
-	transactionService := service.NewTransactionService(transactionRepository, touristAttractionRepository, paymentService, validate)
-	ticketService := service.NewTicketService(ticketRepository, validate)
+	transactionService := service.NewTransactionService(transactionRepository, touristAttractionRepository, userRepository, paymentService, validate)
+	ticketService := service.NewTicketService(ticketRepository, userRepository, validate)
 
 	adminController := controller.NewAdminController(adminService)
 	userController := controller.NewUserController(userService)

@@ -21,13 +21,19 @@ type TransactionCreateResponse struct {
 }
 
 type TransactionResponse struct {
-	ID                  uuid.UUID
-	UserID              uint
-	User                UserResponse
-	TouristAttractionID int
-	TouristAttraction   TouristAttractionResponse
-	Qty                 int
-	Amount              float64
-	ReservationDate     time.Time
-	Status              string
+	ID                uuid.UUID                 `json:"id"`
+	TouristAttraction TouristAttractionResponse `json:"tourist_attraction"`
+	Qty               int                       `json:"qty"`
+	Amount            float64                   `json:"amount"`
+	ReservationDate   time.Time                 `json:"reservation_date"`
+	Status            string                    `json:"status"`
+}
+
+type UserTransactionResponse struct {
+	ID                  uint                  `json:"id"`
+	Name                string                `json:"name"`
+	Email               string                `json:"email"`
+	NoPhone             string                `json:"no_phone"`
+	ProfilePicture      string                `json:"profile_picture"`
+	TransactionResponse []TransactionResponse `json:"transactions"`
 }
