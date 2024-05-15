@@ -41,3 +41,10 @@ func (repository *TransactionRepositoryImpl) GetByID(transactionID int) (transac
 	}
 	return transaction, nil
 }
+
+func (repository *TransactionRepositoryImpl) Update(transaction *domain.Transaction) error {
+	if err := repository.DB.Save(&transaction).Error; err != nil {
+		return constant.ErrUpdateData
+	}
+	return nil
+}

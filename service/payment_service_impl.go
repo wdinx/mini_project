@@ -79,6 +79,14 @@ func (service *PaymentServiceImpl) ConfirmedPayment(id string) error {
 		return err
 	}
 
+	// Action to Update transaction status
+	payment.Transaction.Status = "SUCCESS"
+
+	err = service.transactionRepository.Update(&payment.Transaction)
+	if err != nil {
+		return err
+	}
+
 	// Action to create ticket
 	ticket := domain.Ticket{
 		ID:                  uuid.New(),
