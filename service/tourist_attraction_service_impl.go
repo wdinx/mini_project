@@ -44,6 +44,9 @@ func (service *TouristAttractionServiceImpl) Create(request *web.TouristAttracti
 }
 
 func (service *TouristAttractionServiceImpl) Update(request *web.TouristAttractionUpdateRequest) (*web.TouristAttractionResponse, error) {
+	if err := service.validator.Struct(request); err != nil {
+		return &web.TouristAttractionResponse{}, constant.ErrEmptyInput
+	}
 
 	filename := util.GenerateImageName(request.Name, request.Image.Filename)
 
