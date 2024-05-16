@@ -38,6 +38,11 @@ func (controller *TouristAttractionTypeControllerImpl) Update(c echo.Context) er
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
+	touristAttractionID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
+	}
+	touristAttractionTypeUpdateRequest.ID = uint(touristAttractionID)
 	result, err := controller.touristAttractionTypeService.Update(&touristAttractionTypeUpdateRequest)
 	if err != nil {
 		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))

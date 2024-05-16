@@ -5,7 +5,7 @@ type TouristAttractionTypeCreateRequest struct {
 }
 
 type TouristAttractionTypeUpdateRequest struct {
-	ID   uint   `json:"id" validate:"required"`
+	ID   uint
 	Name string `json:"name" validate:"required,min=1,max=200"`
 }
 
