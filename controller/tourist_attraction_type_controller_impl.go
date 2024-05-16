@@ -67,3 +67,17 @@ func (controller *TouristAttractionTypeControllerImpl) GetAll(c echo.Context) er
 	}
 	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction type found", result))
 }
+
+func (controller *TouristAttractionTypeControllerImpl) FindByID(c echo.Context) error {
+	var err error
+	id := c.Param("id")
+	idx, err := strconv.Atoi(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, web.NewBaseErrorResponse(err.Error()))
+	}
+	result, err := controller.touristAttractionTypeService.FindByID(idx)
+	if err != nil {
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
+	}
+	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("tourist attraction type found", result))
+}

@@ -7,4 +7,5 @@ type TouristAttractionTypeService interface {
 	Update(request *web.TouristAttractionTypeUpdateRequest) (*web.TouristAttractionTypeResponse, error)
 	Delete(touristAttractionTypeId int) error
 	GetAll() *[]web.TouristAttractionTypeResponse
+	FindByID(touristAttractionTypeId int) (*web.TouristAttractionTypeResponse, error)
 }

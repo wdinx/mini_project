@@ -39,7 +39,7 @@ func (service *TicketServiceImpl) FindByUserID(userID int) (*web.UserTicketRespo
 		return &web.UserTicketResponse{}, err
 	}
 
-	response := converter.ToUserTicketResponse(user, tickets)
+	response := converter.ToTicketResponseByUserID(user, tickets)
 
 	return response, nil
 }

@@ -1,16 +1,13 @@
 package controller
 
 import (
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
-	"mini_project/constant"
 	"mini_project/exception"
 	"mini_project/model/web"
 	"mini_project/service"
 	"mini_project/util"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 type TransactionControllerImpl struct {
@@ -39,26 +36,18 @@ func (controller *TransactionControllerImpl) InitializeTransaction(c echo.Contex
 
 func (controller *TransactionControllerImpl) GetByUserID(c echo.Context) error {
 	authHeader := c.Request().Header.Get("Authorization")
-	tokenString := strings.Split(authHeader, " ")[1]
 
-	token, err := util.ParsingToken(tokenString)
+	userID, err := util.GetUserIdFromToken(authHeader)
 
 	if err != nil {
 		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		userID := int(claims["userId"].(float64))
-
-		transactions, err := controller.TransactionService.GetByUserID(userID)
-
-		if err != nil {
-			return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
-		}
-
-		return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get transactions", transactions))
+	response, err := controller.TransactionService.GetByUserID(userID)
+	if err != nil {
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
-	return c.JSON(exception.ErrorHandler(constant.ErrInvalidToken), web.NewBaseErrorResponse(constant.ErrInvalidToken.Error()))
+	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get transactions", response))
 }
 
 func (controller *TransactionControllerImpl) GetByID(c echo.Context) error {

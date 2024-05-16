@@ -7,4 +7,5 @@ type TouristAttractionTypeController interface {
 	Update(c echo.Context) error
 	Delete(c echo.Context) error
 	GetAll(c echo.Context) error
+	FindByID(c echo.Context) error
 }

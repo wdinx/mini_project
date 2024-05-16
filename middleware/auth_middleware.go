@@ -16,11 +16,12 @@ func CreateTokenForUser(userId int, name string) (string, error) {
 	return token.SignedString([]byte(constant.USER_SECRET_JWT))
 }
 
-func CreateTokeForAdmin(adminId int, name string) (string, error) {
+func CreateTokeForAdmin(adminId int, touristAttractionID int, name string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["adminId"] = adminId
+	claims["touristAttractionID"] = touristAttractionID
 	claims["name"] = name
-	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(constant.ADMIN_SECRET_JWT))

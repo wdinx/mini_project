@@ -58,7 +58,7 @@ func (service *AdminServiceImpl) Login(admin web.AdminLoginRequest) (*web.AdminL
 		return &web.AdminLoginResponse{}, constant.ErrLogin
 	}
 
-	token, err := middleware.CreateTokeForAdmin(int(result.ID), result.Username)
+	token, err := middleware.CreateTokeForAdmin(int(result.ID), result.TouristAttractionID, result.Name)
 	if err != nil {
 		return &web.AdminLoginResponse{}, constant.ErrInternalServer
 	}

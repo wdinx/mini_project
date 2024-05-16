@@ -13,7 +13,7 @@ func ToTicketResponse(ticket *domain.Ticket) *web.TicketResponse {
 	}
 }
 
-func ToUserTicketResponse(user *domain.User, tickets *[]domain.Ticket) *web.UserTicketResponse {
+func ToTicketResponseByUserID(user *domain.User, tickets *[]domain.Ticket) *web.UserTicketResponse {
 	var response []web.TicketResponse
 	for _, value := range *tickets {
 		response = append(response, *ToTicketResponse(&value))

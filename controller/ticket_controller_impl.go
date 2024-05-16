@@ -1,16 +1,13 @@
 package controller
 
 import (
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
-	"mini_project/constant"
 	"mini_project/exception"
 	"mini_project/model/web"
 	"mini_project/service"
 	"mini_project/util"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 type TicketControllerImpl struct {
@@ -25,27 +22,20 @@ func NewTicketController(ticketService service.TicketService) TicketController {
 
 func (controller *TicketControllerImpl) FindByUserID(c echo.Context) error {
 	authHeader := c.Request().Header.Get("Authorization")
-	tokenString := strings.Split(authHeader, " ")[1]
 
-	token, err := util.ParsingToken(tokenString)
+	userID, err := util.GetUserIdFromToken(authHeader)
 
 	if err != nil {
 		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		userID := int(claims["userId"].(float64))
+	response, err := controller.ticketService.FindByUserID(userID)
 
-		tickets, err := controller.ticketService.FindByUserID(userID)
-
-		if err != nil {
-			return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
-		}
-
-		return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get tickets", tickets))
+	if err != nil {
+		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
 
-	return c.JSON(exception.ErrorHandler(constant.ErrUnauthorized), web.NewBaseErrorResponse(constant.ErrUnauthorized.Error()))
+	return c.JSON(http.StatusOK, web.NewBaseSuccessResponse("success get tickets", response))
 }
 
 func (controller *TicketControllerImpl) FindByTouristAttractionID(c echo.Context) error {

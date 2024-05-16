@@ -20,7 +20,7 @@
          "content": {
            "application/json": {
              "schema": {
-               "$ref": "#/components/schemas/UserLogin"
+               "$ref": "#/components/schemas/AdminLoginRequest"
              }
            }
          }
@@ -40,21 +40,7 @@
                      "type": "string"
                    },
                    "data": {
-                     "type": "object",
-                     "properties": {
-                       "id": {
-                         "type": "integer"
-                       },
-                       "name": {
-                         "type": "string"
-                       },
-                       "email": {
-                         "type": "string"
-                       },
-                       "token": {
-                         "type": "string"
-                       }
-                     }
+                     "$ref": "#/components/schemas/AdminLoginResponse"
                    }
                  }
                }
@@ -75,7 +61,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegister"
+                "$ref": "#/components/schemas/AdminRegisterRequest"
               }
             }
           }
@@ -95,24 +81,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
-                        },
-                        "no_phone": {
-                          "type": "string"
-                        },
-                        "password": {
-                          "type": "string"
-                        },
-                        "profile_picture": {
-                          "type": "string"
-                        }
-                      }
+                      "$ref": "#/components/schemas/AdminRegisterResponse"
                     }
                   }
                 }
@@ -131,7 +100,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserLogin"
+                "$ref": "#/components/schemas/UserLoginRequest"
               }
             }
           }
@@ -142,32 +111,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "boolean"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
-                        },
-                        "token": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserLoginResponse"
                 }
               }
             }
@@ -184,7 +128,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegister"
+                "$ref": "#/components/schemas/UserRegisterRequest"
               }
             }
           }
@@ -255,15 +199,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer"
-                          },
-                          "name": {
-                            "type": "string"
-                          }
-                        }
+                        "$ref": "#/components/schemas/TouristAttractionTypeResponse"
                       }
                     }
                   }
@@ -308,15 +244,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
+                      "$ref": "#/components/schemas/TouristAttractionTypeResponse"
                     }
                   }
                 }
@@ -358,15 +286,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
+                        "$ref": "#/components/schemas/TouristAttractionTypeResponse"
                     }
                   }
                 }
@@ -420,15 +340,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "name": {
-                          "type": "string"
-                        }
-                      }
+                      "$ref": "#/components/schemas/TouristAttractionTypeResponse"
                     }
                   }
                 }
@@ -462,41 +374,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "tourist_attraction_type": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "integer"
-                              },
-                              "name": {
-                                "type": "string"
-                              }
-                            }
-                          },
-                          "location": {
-                              "type": "string"
-                          },
-                          "price": {
-                            "type": "integer"
-                          },
-                          "image": {
-                            "type": "string"
-                          },
-                          "balance": {
-                            "type": "integer"
-                          }
-                        }
+                        "$ref": "#/components/schemas/TouristAttractionResponse"
                       }
                     }
                   }
@@ -516,27 +394,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "tourist_attraction_type_id": {
-                    "type": "integer"
-                  },
-                  "location": {
-                    "type": "string"
-                  },
-                  "price": {
-                    "type": "integer"
-                  },
-                  "image": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/TouristAttractionRequest"
               }
             }
           }
@@ -556,41 +414,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "description": {
-                          "type": "string"
-                        },
-                        "tourist_attraction_type": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer"
-                            },
-                            "name": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "location": {
-                          "type": "string"
-                        },
-                        "price": {
-                          "type": "integer"
-                        },
-                        "image": {
-                          "type": "string"
-                        },
-                        "balance": {
-                          "type": "integer"
-                        }
-                      }
+                      "$ref": "#/components/schemas/TouristAttractionResponse"
                     }
                   }
                 }
@@ -632,41 +456,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "description": {
-                          "type": "string"
-                        },
-                        "tourist_attraction_type": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer"
-                            },
-                            "name": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "location": {
-                          "type": "string"
-                        },
-                        "price": {
-                          "type": "integer"
-                        },
-                        "image": {
-                          "type": "string"
-                        },
-                        "balance": {
-                          "type": "integer"
-                        }
-                      }
+                      "$ref": "#/components/schemas/TouristAttractionResponse"
                     }
                   }
                 }
@@ -695,27 +485,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "tourist_attraction_type_id": {
-                    "type": "integer"
-                  },
-                  "location": {
-                    "type": "string"
-                  },
-                  "ticket_price": {
-                    "type": "integer"
-                  },
-                  "image": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/TouristAttractionRequest"
               }
             }
           }
@@ -776,21 +546,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer"
-                          },
-                          "user": {
-                            "$ref": "#/components/schemas/UserResponse"
-                          },
-                          "tourist_attraction": {
-                            "$ref": "#/components/schemas/TouristAttraction"
-                          },
-                          "ReservationDate": {
-                            "type": "string"
-                          }
-                        }
+                        "$ref": "#/components/schemas/TicketResponse"
                       }
                     }
                   }
@@ -833,21 +589,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "user": {
-                          "$ref": "#/components/schemas/UserResponse"
-                        },
-                        "tourist_attraction": {
-                          "$ref": "#/components/schemas/TouristAttraction"
-                        },
-                        "ReservationDate": {
-                          "type": "string"
-                        }
-                      }
+                      "$ref": "#/components/schemas/TicketResponse"
                     }
                   }
                 }
@@ -879,24 +621,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer"
-                          },
-                          "user": {
-                            "$ref": "#/components/schemas/UserResponse"
-                          },
-                          "tourist_attraction": {
-                            "$ref": "#/components/schemas/TouristAttraction"
-                          },
-                          "ReservationDate": {
-                            "type": "string"
-                          }
-                        }
-                      }
+                      "$ref": "#/components/schemas/TicketByUserIDResponse"
                     }
                   }
                 }
@@ -938,21 +663,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "user": {
-                          "$ref": "#/components/schemas/UserResponse"
-                        },
-                        "tourist_attraction": {
-                          "$ref": "#/components/schemas/TouristAttraction"
-                        },
-                        "ReservationDate": {
-                          "type": "string"
-                        }
-                      }
+                      "$ref": "#/components/schemas/TicketResponse"
                     }
                   }
                 }
@@ -973,21 +684,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "user_id": {
-                    "type": "integer"
-                  },
-                  "tourist_attraction_id": {
-                    "type": "integer"
-                  },
-                  "quantity": {
-                    "type": "integer"
-                  },
-                  "ReservationDate": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/TransactionInitializeRequest"
               }
             }
           }
@@ -1007,21 +704,7 @@
                       "type": "string"
                     },
                     "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                            "type": "integer"
-                        },
-                        "amount": {
-                            "type": "integer"
-                        },
-                        "status": {
-                            "type": "integer"
-                        },
-                        "snap_url": {
-                            "type": "string"
-                        }
-                      }
+                        "$ref": "#/components/schemas/TransactionInitializeResponse"
                     }
                   }
                 }
@@ -1034,18 +717,24 @@
   },
   "components": {
     "schemas": {
-      "UserLogin": {
+      "UserLoginResponse": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
           "email": {
             "type": "string"
           },
-          "password": {
+          "token": {
             "type": "string"
           }
         }
       },
-      "UserRegister": {
+      "UserRegisterResponse": {
         "type": "object",
         "properties": {
           "name": {
@@ -1055,9 +744,6 @@
             "type": "string"
           },
           "no_phone": {
-            "type": "string"
-          },
-          "password": {
             "type": "string"
           },
           "profile_picture": {
@@ -1086,7 +772,34 @@
           }
         }
       },
-      "TouristAttractionType": {
+      "AdminRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "AdminLoginResponse": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "TouristAttractionTypeResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -1097,7 +810,7 @@
           }
         }
       },
-      "TouristAttraction": {
+      "TouristAttractionResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -1110,7 +823,7 @@
             "type": "string"
           },
           "tourist_attraction_type": {
-            "$ref": "#/components/schemas/TouristAttractionType"
+            "$ref": "#/components/schemas/TouristAttractionTypeResponse"
           },
           "location": {
             "type": "string"
@@ -1123,6 +836,219 @@
           },
           "balance": {
             "type": "integer"
+          }
+        }
+      },
+      "TransactionInitializeResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "snap_url": {
+            "type": "string"
+          }
+        }
+      },
+      "TicketResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "tourist_attraction": {
+            "$ref": "#/components/schemas/TouristAttractionResponse"
+          },
+          "ReservationDate": {
+            "type": "string"
+          }
+        }
+      },
+      "TicketByUserIDResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "no_phone": {
+            "type": "string"
+          },
+          "profile_picture": {
+            "type": "string"
+          },
+          "tickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketResponse"
+            }
+          }
+        }
+      },
+      "TransactionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "tourist_attraction": {
+            "$ref": "#/components/schemas/TouristAttractionResponse"
+          },
+          "qty": {
+            "type": "integer"
+          },
+          "reservation_date": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          }
+        }
+      },
+      "TransactionByUserID": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "no_phone": {
+            "type": "string"
+          },
+          "profile_picture": {
+            "type": "string"
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransactionResponse"
+            }
+          }
+        }
+      },
+
+      "AdminLoginRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          }
+        }
+      },
+      "AdminRegisterRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "tourist_attraction_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "UserLoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          }
+        }
+      },
+      "UserRegisterRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "no_phone": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "minLength": 6
+          },
+          "profile_picture": {
+            "type": "string"
+          }
+        }
+      },
+      "TouristAttractionRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "tourist_attraction_type_id": {
+            "type": "integer"
+          },
+          "location": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "image": {
+            "type": "string"
+          }
+        }
+      },
+      "TransactionInitializeRequest": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "tourist_attraction_id": {
+            "type": "integer"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "ReservationDate": {
+            "type": "string"
           }
         }
       }
