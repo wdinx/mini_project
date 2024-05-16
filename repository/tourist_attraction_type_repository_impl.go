@@ -51,7 +51,7 @@ func (repository *TouristAttractionTypeRepositoryImpl) GetAll() []domain.Tourist
 
 func (repository *TouristAttractionTypeRepositoryImpl) FindByID(id int) (*domain.TouristAttractionType, error) {
 	var touristAttractionType domain.TouristAttractionType
-	if err := repository.DB.Find(&touristAttractionType, "id = ?", id).Error; err != nil {
+	if err := repository.DB.First(&touristAttractionType, "id = ?", id).Error; err != nil {
 		return &domain.TouristAttractionType{}, err
 	}
 	return &touristAttractionType, nil
