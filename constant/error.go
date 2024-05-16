@@ -7,7 +7,7 @@ var ErrEmptyInput error = errors.New("field cannot be empty")
 var ErrDataNotFound error = errors.New("Data not found")
 
 var ErrLogin error = errors.New("Invalid Username or Password")
-var ErrRegister error = errors.New("Registration Failed")
+var ErrRegister error = errors.New("Email already taken")
 
 var ErrInsertData error = errors.New("Failed to input data")
 var ErrUpdateData error = errors.New("Failed to update data")
