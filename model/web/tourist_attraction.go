@@ -9,7 +9,7 @@ type TouristAttractionRequest struct {
 	Description             string                `json:"description" form:"description"`
 	TouristAttractionTypeId uint                  `json:"tourist_attraction_type_id" form:"tourist_attraction_type_id" validate:"required"`
 	Location                string                `json:"location" form:"location" validate:"required,min=1,max=200"`
-	TicketPrice             float64               `json:"ticket_price" form:"ticket_price" validate:"required,min=1,max=200"`
+	TicketPrice             float64               `json:"ticket_price" form:"ticket_price" validate:"required,min=1"`
 	Image                   *multipart.FileHeader `json:"image" form:"image" validate:"required"`
 }
 

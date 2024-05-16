@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"mini_project/exception"
 	"mini_project/model/web"
@@ -24,6 +25,7 @@ func (controller *TouristAttractionControllerImpl) Create(c echo.Context) error 
 		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
 	touristAttractionCreateRequest.Image, err = c.FormFile("image")
+	fmt.Print(touristAttractionCreateRequest)
 	if err != nil {
 		return c.JSON(exception.ErrorHandler(err), web.NewBaseErrorResponse(err.Error()))
 	}
