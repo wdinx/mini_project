@@ -35,7 +35,7 @@ func (repository *TransactionRepositoryImpl) GetByUserID(userID int) (transactio
 	return transactions, nil
 }
 
-func (repository *TransactionRepositoryImpl) GetByID(transactionID int) (transaction *domain.Transaction, err error) {
+func (repository *TransactionRepositoryImpl) GetByID(transactionID string) (transaction *domain.Transaction, err error) {
 	if err = repository.DB.Preload("TouristAttraction").Preload("TouristAttractionType").Preload("User").Find(&transaction, "id = ?", transactionID).Error; err != nil {
 		return transaction, constant.ErrDataNotFound
 	}

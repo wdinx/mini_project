@@ -7,7 +7,6 @@ import (
 	"mini_project/service"
 	"mini_project/util"
 	"net/http"
-	"strconv"
 )
 
 type TransactionControllerImpl struct {
@@ -51,10 +50,7 @@ func (controller *TransactionControllerImpl) GetByUserID(c echo.Context) error {
 }
 
 func (controller *TransactionControllerImpl) GetByID(c echo.Context) error {
-	transactionID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
-	}
+	transactionID := c.Param("id")
 
 	transaction, err := controller.TransactionService.GetByID(transactionID)
 	if err != nil {

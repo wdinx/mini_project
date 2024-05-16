@@ -92,7 +92,7 @@ func (service *TransactionServiceImpl) GetByUserID(userID int) (*web.UserTransac
 	return responses, nil
 }
 
-func (service *TransactionServiceImpl) GetByID(transactionID int) (*web.TransactionResponse, error) {
+func (service *TransactionServiceImpl) GetByID(transactionID string) (*web.TransactionResponse, error) {
 	transaction, err := service.transactionRepository.GetByID(transactionID)
 	if err != nil {
 		return &web.TransactionResponse{}, err
