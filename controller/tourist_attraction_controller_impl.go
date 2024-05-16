@@ -43,6 +43,10 @@ func (controller *TouristAttractionControllerImpl) Update(c echo.Context) error 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
+	touristAttractionUpdateRequest.Image, err = c.FormFile("image")
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
+	}
 	if err = c.Bind(&touristAttractionUpdateRequest); err != nil {
 		return c.JSON(http.StatusBadRequest, web.NewBaseErrorResponse(err.Error()))
 	}
