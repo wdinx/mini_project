@@ -35,6 +35,9 @@ Aplikasi pembelian tiket wisata dirancang untuk memenuhi kebutuhan praktis dalam
 ## ERD
 ![ERD](https://alterra.sgp1.cdn.digitaloceanspaces.com/erd.png)
 
+## API DOCS
+[SWAGGER](https://app.swaggerhub.com/apis/WAHYUUDIN2811_1/ticket-reservation/1.0.0)
+
 ## Getting Started
 1. Clone repository
 ```
