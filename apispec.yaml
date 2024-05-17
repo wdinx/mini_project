@@ -572,6 +572,20 @@ paths:
                     type: string
                   data:
                     $ref: '#/components/schemas/TransactionResponse'
+  /v1/chatbot:
+    get:
+      summary: ChatBot
+      description: ChatBot
+      tags:
+        - Websocket
+      responses:
+        '200':
+          description: Chatbot
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ini adalah contoh responsenya
 
 components:
   schemas:

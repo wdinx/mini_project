@@ -33,6 +33,7 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	paymentService := service.NewPaymentService(paymentRepository, midtransService, touristAttractionService, ticketRepository, transactionRepository)
 	transactionService := service.NewTransactionService(transactionRepository, touristAttractionRepository, userRepository, paymentService, validate)
 	ticketService := service.NewTicketService(ticketRepository, userRepository, validate)
+	chatbotService := service.NewChatBotService()
 
 	adminController := controller.NewAdminController(adminService)
 	userController := controller.NewUserController(userService)
@@ -41,6 +42,7 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	midtransController := controller.NewMidtransController(midtransService, paymentService)
 	transactionController := controller.NewTransactionController(transactionService)
 	ticketController := controller.NewTicketController(ticketService)
+	chatbotController := controller.NewChatBotController(chatbotService)
 
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(200, map[string]interface{}{
@@ -92,4 +94,7 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 	eUser.POST("/transaction/initialize", transactionController.InitializeTransaction)
 	eUser.GET("/transactions", transactionController.GetByUserID)
 	eUser.GET("/transaction/:id", transactionController.GetByID)
+
+	// Route for Chatbot
+	e.GET("/chat", chatbotController.ChatBot)
 }
