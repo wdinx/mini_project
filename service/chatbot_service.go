@@ -1,5 +1,7 @@
 package service
 
+import "github.com/sashabaranov/go-openai"
+
 type ChatBotService interface {
-	ChatBotRequest(message string) (string, error)
+	ChatBotRequest(*[]openai.ChatCompletionMessage) (*[]openai.ChatCompletionMessage, error)
 }

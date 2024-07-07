@@ -97,4 +97,5 @@ func InitRoute(db *gorm.DB, e *echo.Echo, validate *validator.Validate, config *
 
 	// Route for Chatbot
 	e.GET("/chat", chatbotController.ChatBot)
+	e.POST("/chat-restful", chatbotController.ChatBotRestFul)
 }
